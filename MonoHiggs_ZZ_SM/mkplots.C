@@ -29,9 +29,9 @@ TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, cons
       h->SetLineColor(color);
       h->SetFillColor(color);
       //h->Scale(1E-3);
-      cout << n << endl;
+      //cout << n << endl;
       n += 1;
-      if (leg && n==1) { leg->AddEntry(h, legsamp, "f"); }
+      if (leg && (n==1 || n==7)) { leg->AddEntry(h, legsamp, "f"); }
       stack->Add(h);
    }
    return h;
@@ -54,12 +54,13 @@ THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend 
    stack->SetHistogram(h_base);
    if (mode == 0)
    {
-      AddHist(stack, leg, f, name, "2e2mu", "ZZ", FILL0, MYCYAN1, mw, n);
+      AddHist(stack, leg, f, name, "2e2mu",  "ZZ", FILL0, MYCYAN1, mw, n);
       AddHist(stack, leg, f, name, "2e2tau", "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "2mu2tau", "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "4e", "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "4mu", "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "4tau", "ZZ", FILL0, MYCYAN1, mw, n);
+      AddHist(stack, leg, f, name, "2mu2tau","ZZ", FILL0, MYCYAN1, mw, n);
+      AddHist(stack, leg, f, name, "4e",     "ZZ", FILL0, MYCYAN1, mw, n);
+      AddHist(stack, leg, f, name, "4mu",    "ZZ", FILL0, MYCYAN1, mw, n);
+      AddHist(stack, leg, f, name, "4tau",   "ZZ", FILL0, MYCYAN1, mw, n);
+      AddHist(stack, leg, f, name, "zzjets",   "ZZ + Jets", FILL0, MYGREEN1, mw, n);
 
    }
    return stack;
@@ -92,7 +93,7 @@ mkplots(){
    
 
    TCanvas * c1 = new TCanvas("c1", "");
-   TLegend * leg1 = new TLegend(0.2, 0.65, 0.40, 0.90);
+   TLegend * leg1 = new TLegend(0.15, 0.65, 0.35, 0.90);
    c1->SetLogy();
    c1->cd();
    double mw = 0;
@@ -141,21 +142,20 @@ mkplots(){
    //hmet_sig->Draw("HSAME");
    leg2->Draw();
    c2->SaveAs("met_ctrl.png");
-return;
 
-   TCanvas * c2 = new TCanvas("c2", "");
-   TLegend * leg2 = new TLegend(0.6, 0.65, 0.8, 0.90);
+   TCanvas * c3 = new TCanvas("c3", "");
+   TLegend * leg3 = new TLegend(0.6, 0.65, 0.8, 0.90);
    //c2->SetLogy();
-   c2->cd();
+   c3->cd();
    n = 0;
-   THStack * hmllll_mc   = GetBkgStack(f, "histZZMass", "Four Lepton Invariant Mass [GeV]", leg2, mw, n);
-   TH1F    * hmllll_data = GetSigHist(f, "histZZMass", "data", "Four Lepton Invariant Mass [GeV]", MYRED1, LSOLID, leg2, "Data");
+   THStack * hmllll_mc   = GetBkgStack(f, "histZZMass", "Four Lepton Invariant Mass [GeV]", leg3, mw, n);
+   TH1F    * hmllll_data = GetSigHist(f, "histZZMass", "data", "Four Lepton Invariant Mass [GeV]", MYRED1, LSOLID, leg3, "Data");
    hmllll_data->Scale(1 / 0.000617832);
    hmllll_data->Draw("EP");
    hmllll_mc->Draw("HSAME");//HSAME
    hmllll_data->Draw("EPSAME");
-   leg2->Draw();
-   c2->SaveAs("mllll.png");
+   leg3->Draw();
+   c3->SaveAs("mllll.png");
   
 
 
