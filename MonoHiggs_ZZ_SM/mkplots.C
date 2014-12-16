@@ -8,7 +8,6 @@ enum {MYMAGENTA1  = kMagenta};
 enum {MYMAGENTA2  = kMagenta+2};
 enum {MYBLUE1    = kBlue};
 enum {MYBLUE2    = kBlue-2};
-
 enum {MYRED1     = kRed};
 enum {MYRED2     = kRed-2};
 
@@ -18,26 +17,23 @@ enum {FILLSIG1 = 3002, FILLSIG2 = 3003};
 enum {LSOLID=1, LDASHED=2};
 
 
-TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, const char * sample, const char * legsamp, int style, int color, double & mw, int & n){
+TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, const char * sample, const char * legsamp, int style, int color, int & n){
    char full_name[200];
    sprintf(full_name, "%s_%s", name, sample);
    TH1F * h = f->Get(full_name);
    if (h){
-      
-      mw += h->GetSumOfWeights();
       h->SetFillStyle(style);
       h->SetLineColor(color);
       h->SetFillColor(color);
-      //h->Scale(1E-3);
-      //cout << n << endl;
       n += 1;
-      if (leg && (n==1 || n==7)) { leg->AddEntry(h, legsamp, "f"); }
+      if (leg) { leg->AddEntry(h, legsamp, "f"); }
+      //if (leg && (n==1 || n==9)) { leg->AddEntry(h, legsamp, "f"); }
       stack->Add(h);
    }
    return h;
 }
 
-THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, double & mw, int & n, int mode==0){
+THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, int & n, int mode==0){
    char full_name[200];
    
    if (leg) {
@@ -54,14 +50,14 @@ THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend 
    stack->SetHistogram(h_base);
    if (mode == 0)
    {
-      AddHist(stack, leg, f, name, "2e2mu",  "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "2e2tau", "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "2mu2tau","ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "4e",     "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "4mu",    "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "4tau",   "ZZ", FILL0, MYCYAN1, mw, n);
-      AddHist(stack, leg, f, name, "zzjets",   "ZZ + Jets", FILL0, MYGREEN1, mw, n);
-
+      AddHist(stack, leg, f, name, "ggZZ2l2l", "ggZZ2l2l", FILL0, MYORANGE2,  n);
+      AddHist(stack, leg, f, name, "4e",       "4e", FILL0, MYGREEN2,   n);
+      AddHist(stack, leg, f, name, "4mu",      "4mu", FILL0, MYORANGE1,  n);
+      AddHist(stack, leg, f, name, "4tau",     "4tau", FILL0, MYMAGENTA1, n);
+      AddHist(stack, leg, f, name, "ggZZ4l",   "ggZZ4l", FILL0, MYMAGENTA2, n);
+      AddHist(stack, leg, f, name, "2e2mu",    "2e2mu", FILL0, MYCYAN1,    n);
+      AddHist(stack, leg, f, name, "2e2tau",   "2e2tau", FILL0, MYGREEN1,   n);
+      AddHist(stack, leg, f, name, "2mu2tau",  "2mu2tau", FILL0, MYCYAN2,    n);
    }
    return stack;
 }
@@ -72,12 +68,14 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, const char * xt
    sprintf(full_name, "%s_%s", name, tag);
    TH1F * h = f->Get(full_name);
 
-   h->SetFillStyle(0);
-   h->SetFillColor(color);
-   h->SetLineColor(color);   
-   h->SetLineStyle(lstyle);   
-   h->SetXTitle(xtitle);
-   if (leg) { leg->AddEntry(h, legtag, "l"); }  
+   if(h){
+     h->SetFillStyle(0);
+     h->SetFillColor(color);
+     h->SetLineColor(color);   
+     h->SetLineStyle(lstyle);   
+     h->SetXTitle(xtitle);
+     if (leg) { leg->AddEntry(h, legtag, "l"); }  
+   }
 
    return h;
 }
@@ -85,79 +83,73 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, const char * xt
 mkplots(){
    gStyle->SetOptStat(0);
 
-   double basemin = 0.001;
-
    TFile * f = new TFile("latest.root");
-   //TFile * f2 = new TFile("ZZIndep/latest_Full_Combo.root");
-   //f->ls();
    
-
    TCanvas * c1 = new TCanvas("c1", "");
-   TLegend * leg1 = new TLegend(0.15, 0.65, 0.35, 0.90);
+   TLegend * leg1 = new TLegend(0.15, 0.56, 0.35, 0.85);
    c1->SetLogy();
    c1->cd();
-   double mw = 0;
    int n = 0;
-   THStack * hmet_mc   = GetBkgStack(f, "histPFMET", "Missing Transverse Energy [GeV]", leg1, mw, n);
+   THStack * hmet_mc   = GetBkgStack(f, "histPFMET", "Missing Transverse Energy [GeV]", leg1, n);
    TH1F    * hmet_data = GetSigHist(f, "histPFMET", "data", "Missing Transverse Energy [GeV]", MYRED1, LSOLID, leg1, "Data");
-   n = 0;
-   //TH1F    * hmet_sig  = GetSigHist(f2, "h0met_nopu", "hxx_100GeV", "Missing Transverse Energy [GeV]", kBlack, LSOLID, leg1, "M_X = 100 GeV");
-   hmet_data->Scale(1 / 0.000617832); 
-   double dw = hmet_data->GetSumOfWeights();
-   //double sw = hmet_sig->GetSumOfWeights();
-   //hmet_sig->Scale(1E4);
-   //hmet_sig->Scale(10 * dw / sw);
-   //cout << dw / sw << endl;
-   cout << dw << " " << mw << endl;
-   cout << dw / mw << endl;
    hmet_data->Draw("EP");
    hmet_mc->Draw("HSAME");
    hmet_data->Draw("EPSAME");
-   //hmet_sig->Draw("HSAME");
    leg1->Draw();
    c1->SaveAs("met.png");
 
    TCanvas * c2 = new TCanvas("c2", "");
-   TLegend * leg2 = new TLegend(0.65, 0.65, 0.85, 0.90);
+   TLegend * leg2 = new TLegend(0.7, 0.56, 0.9, 0.85);
    c2->SetLogy();
    c2->cd();
-   double mw = 0;
    n = 0;
-   THStack * hmet_ctrl_mc   = GetBkgStack(f, "histPFMETctrl", "Missing Transverse Energy [GeV]", leg2, mw, n);
+   THStack * hmet_ctrl_mc   = GetBkgStack(f, "histPFMETctrl", "Missing Transverse Energy [GeV]", leg2, n);
    TH1F    * hmet_ctrl_data = GetSigHist(f, "histPFMETctrl", "data", "Missing Transverse Energy [GeV]", MYRED1, LSOLID, leg2, "Data");
    n = 0;
-   //TH1F    * hmet_sig  = GetSigHist(f2, "h0met_nopu", "hxx_100GeV", "Missing Transverse Energy [GeV]", kBlack, LSOLID, leg1, "M_X = 100 GeV");
-   hmet_ctrl_data->Scale(1 / 0.000617832); 
-   
-   //double dw = hmet_data->GetSumOfWeights();
-   //double sw = hmet_sig->GetSumOfWeights();
-   //hmet_sig->Scale(1E4);
-   //hmet_sig->Scale(10 * dw / sw);
-   //cout << dw / sw << endl;
-   //cout << dw << " " << mw << endl;
-   //cout << dw / mw << endl;
    hmet_ctrl_data->Draw("EP");
    hmet_ctrl_mc->Draw("HSAME");
    hmet_ctrl_data->Draw("EPSAME");
-   //hmet_sig->Draw("HSAME");
    leg2->Draw();
    c2->SaveAs("met_ctrl.png");
 
    TCanvas * c3 = new TCanvas("c3", "");
-   TLegend * leg3 = new TLegend(0.6, 0.65, 0.8, 0.90);
-   //c2->SetLogy();
+   TLegend * leg3 = new TLegend(0.7, 0.56, 0.9, 0.85);
+   c3->SetLogy();
    c3->cd();
    n = 0;
-   THStack * hmllll_mc   = GetBkgStack(f, "histZZMass", "Four Lepton Invariant Mass [GeV]", leg3, mw, n);
+   THStack * hmllll_mc   = GetBkgStack(f, "histZZMass", "Four Lepton Invariant Mass [GeV]", leg3, n);
    TH1F    * hmllll_data = GetSigHist(f, "histZZMass", "data", "Four Lepton Invariant Mass [GeV]", MYRED1, LSOLID, leg3, "Data");
-   hmllll_data->Scale(1 / 0.000617832);
    hmllll_data->Draw("EP");
-   hmllll_mc->Draw("HSAME");//HSAME
+   hmllll_mc->Draw("HSAME");
    hmllll_data->Draw("EPSAME");
    leg3->Draw();
    c3->SaveAs("mllll.png");
   
+   TCanvas * c4 = new TCanvas("c4", "");
+   TLegend * leg4 = new TLegend(0.7, 0.56, 0.9, 0.85);
+   c4->SetLogy();
+   c4->cd();
+   n = 0;
+   THStack * hmz1_mc   = GetBkgStack(f, "histZ1Mass", "Leading Dilepton Invariant Mass [GeV]", leg4, n);
+   TH1F    * hmz1_data = GetSigHist(f, "histZ1Mass", "data", "Leading Dilepton Invariant Mass [GeV]", MYRED1, LSOLID, leg4, "Data");
+   hmz1_data->Draw("EP");
+   hmz1_mc->Draw("HSAME");
+   hmz1_data->Draw("EPSAME");
+   leg4->Draw();
+   c4->SaveAs("mz1.png");
 
+   TCanvas * c5 = new TCanvas("c5", "");
+   TLegend * leg5 = new TLegend(0.7, 0.56, 0.9, 0.85);
+   c5->SetLogy();
+   c5->cd();
+   n = 0;
+   THStack * hmz2_mc   = GetBkgStack(f, "histZ2Mass", "Subleading Dilepton Invariant Mass [GeV]", leg5, n);
+   TH1F    * hmz2_data = GetSigHist(f, "histZ2Mass", "data", "Subleading Dilepton Invariant Mass [GeV]", MYRED1, LSOLID, leg5, "Data");
+   hmz2_data->Draw("EP");
+   hmz2_mc->Draw("HSAME");
+   hmz2_data->Draw("EPSAME");
+   leg5->Draw();
+   c5->SaveAs("mz2.png");
 
 
 

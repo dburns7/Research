@@ -26,7 +26,14 @@ print result
 a,b=result.x*rmax
 print a
 print b
-pl.plot(x,r*rmax)
-#pl.plot(x,a+b*x) #test with linear model
-pl.plot(x, a / (x - b)**2)
+
+fig1 = pl.figure()
+pl.plot(x, r*rmax, color='blue', linewidth='1', label='Data')
+pl.plot(x,a+b*x, color='red', linewidth='1', label='Fit') #test with linear model
+#pl.plot(x, a / (x - b)**2, color='red', linewidth='2', label='Fit')
+pl.xlabel('X [in]')
+pl.ylabel('Rate [Candidates/s]')
+pl.legend(loc=2)
 pl.show()
+fig1.savefig('rate.png')
+
