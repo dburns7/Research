@@ -65,6 +65,12 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, int color, int 
    sprintf(full_name, "%s_%s", name, tag);
    TH1F * h = f->Get(full_name);
 
+   if (leg) {
+      leg->SetFillStyle(0);
+      leg->SetBorderSize(0);
+      leg->SetTextSize(0.04);
+   }
+   
    h->SetFillStyle(0);
    h->SetFillColor(color);
    h->SetLineColor(color);   
@@ -119,19 +125,91 @@ mkplots(){
    //hmet_bkg->GetXaxis()->SetRange(75., 250.);
    //hmet_bkg->GetYaxis()->SetRange(1E-4, 150.);
    c2->SaveAs("met_postcuts.png");
-
-/*
-102  115    h0mll.add_sample(20, "_8TEV");
-103   63 116    h0mll.add_sample(21, "_8TEVPU");
-104    64 117    h0mll.add_sample(22, "_100TEV");
-105     65 118    h0mll.add_sample(23, "_100TEVPU");
-106      66 119    
-107       67 120    cutflow.add_sample_name(20, "8TEV");
-108        68 121    cutflow.add_sample_name(21, "8TEVPU");
-109         69 122    cutflow.add_sample_name(22, "100TEV");
-110          70 123    cutflow.add_sample_name(23, "100TEVPU");
-111 */
-
+   
+   TCanvas * c3 = new TCanvas("c3", "");
+   TLegend * leg3 = new TLegend(0.7, 0.65, 0.85, 0.85);
+   //c3->SetLogy();
+   c3->cd();
+   TH1F    * hmgg_sig1 = GetSigHist(f, "h0mgg", "100TEVPU", MYRED1, LSOLID, leg3, "HXX (1 GeV)");
+   TH1F    * hmgg_bkg1 = GetSigHist(f, "h0mgg", "ZH",  MYCYAN1,  LSOLID, leg3, "HZ");
+   TH1F    * hmgg_bkg2 = GetSigHist(f, "h0mgg", "WH",  MYORANGE1, LSOLID, leg3, "HW");
+   TH1F    * hmgg_bkg3 = GetSigHist(f, "h0mgg", "H",   MYBLUE1,  LSOLID, leg3, "H");
+   TH1F    * hmgg_bkg4 = GetSigHist(f, "h0mgg", "AA",  MYMAGENTA2,  LSOLID, leg3, "AA");
+   TH1F    * hmgg_bkg5 = GetSigHist(f, "h0mgg", "ZAA", MYGREEN2, LSOLID, leg3, "ZAA");
+   hmgg_sig1->Scale(1/hmgg_sig1->Integral());
+   hmgg_bkg1->Scale(1/hmgg_bkg1->Integral());
+   hmgg_bkg2->Scale(1/hmgg_bkg2->Integral());
+   hmgg_bkg3->Scale(1/hmgg_bkg3->Integral());
+   hmgg_bkg4->Scale(1/hmgg_bkg4->Integral());
+   hmgg_bkg5->Scale(1/hmgg_bkg5->Integral());
+   hmgg_sig1->SetLineWidth(2);
+   hmgg_bkg1->SetLineWidth(2);
+   hmgg_bkg2->SetLineWidth(2);
+   hmgg_bkg3->SetLineWidth(2);
+   hmgg_bkg4->SetLineWidth(2);
+   hmgg_bkg5->SetLineWidth(2);
+   hmgg_sig1 ->SetFillColor(kRed);
+   hmgg_sig1 ->SetFillStyle(3005);
+   hmgg_sig1->Draw();
+   hmgg_bkg1->Draw("HSAME");
+   hmgg_bkg2->Draw("HSAME");
+   hmgg_bkg3->Draw("HSAME");
+   hmgg_bkg4->Draw("HSAME");
+   hmgg_bkg5->Draw("HSAME");
+   hmgg_sig1->Draw("HSAME");
+   leg3->Draw();
+   hmgg_sig1->SetAxisRange(0, 0.7,"Y");
+   //hmgg_sig1->SetAxisRange(100., 150.,"X");
+   hmgg_sig1->GetXaxis()->SetTitle("Diphoton Invariant Mass [GeV]");
+   hmgg_sig1->GetYaxis()->SetTitle("Fraction of Events");
+   TLine *l1 = new TLine(116, 0, 116, 0.2);
+   l1->SetLineWidth(3);
+   l1->Draw();
+   TLine *l2 = new TLine(136, 0, 136, 0.2);
+   l2->SetLineWidth(3);
+   l2->Draw();
+   c3->SaveAs("mgg.png");
+   
+   TCanvas * c4 = new TCanvas("c4", "");
+   TLegend * leg4 = new TLegend(0.7, 0.65, 0.85, 0.85);
+   //c3->SetLogy();
+   c4->cd();
+   TH1F    * h0met_sig1 = GetSigHist(f, "h0met_nopu", "100TEVPU", MYRED1, LSOLID, leg4, "HXX (1 GeV)");
+   TH1F    * h0met1 = GetSigHist(f, "h0met_nopu", "ZH",  MYCYAN1,  LSOLID, leg4, "HZ");
+   TH1F    * h0met2 = GetSigHist(f, "h0met_nopu", "WH",  MYGREEN1, LSOLID, leg4, "HW");
+   TH1F    * h0met3 = GetSigHist(f, "h0met_nopu", "H",   MYBLUE1,  LSOLID, leg4, "H");
+   TH1F    * h0met4 = GetSigHist(f, "h0met_nopu", "AA",  MYCYAN2,  LSOLID, leg4, "AA");
+   TH1F    * h0met5 = GetSigHist(f, "h0met_nopu", "ZAA", MYGREEN2, LSOLID, leg4, "ZAA");
+   h0met_sig1 ->Scale(1/h0met_sig1->Integral());
+   h0met1     ->Scale(1/h0met1->Integral());
+   h0met2     ->Scale(1/h0met2->Integral());
+   h0met3     ->Scale(1/h0met3->Integral());
+   h0met4     ->Scale(1/h0met4->Integral());
+   h0met5     ->Scale(1/h0met5->Integral());
+   h0met_sig1 ->SetLineWidth(2);
+   h0met1     ->SetLineWidth(2);
+   h0met2     ->SetLineWidth(2);
+   h0met3     ->SetLineWidth(2);
+   h0met4     ->SetLineWidth(2);
+   h0met5     ->SetLineWidth(2);
+   h0met_sig1 ->SetFillColor(kRed);
+   h0met_sig1 ->SetFillStyle(3005);
+   h0met_sig1 ->Draw();
+   h0met1     ->Draw("HSAME");
+   h0met2     ->Draw("HSAME");
+   h0met3     ->Draw("HSAME");
+   h0met4     ->Draw("HSAME");
+   h0met5     ->Draw("HSAME");
+   h0met_sig1 ->Draw("HSAME");
+   leg4       ->Draw();
+   h0met_sig1 ->SetAxisRange(0, 0.1,"Y");
+   //h0met_sig1->SetAxisRange(100., 150.,"X");
+   h0met_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
+   h0met_sig1->GetYaxis()->SetTitle("Fraction of Events");
+   TLine *l3 = new TLine(100, 0, 100, 0.04);
+   l3->SetLineWidth(3);
+   l3->Draw();
+   c4->SaveAs("met_unitnorm.png");
    
    TCanvas * c6 = new TCanvas("c6", "");
    TLegend * leg6 = new TLegend(0.6, 0.65, 0.80, 0.90);
@@ -173,7 +251,7 @@ mkplots(){
    //TLine *l3 = new TLine(100, 0, 100, 0.04);
    //l3->SetLineWidth(3);
    //l3->Draw();
-   c6->SaveAs("met_unitnorm.png");
+   c6->SaveAs("met_signals.png");
 
 
 }
