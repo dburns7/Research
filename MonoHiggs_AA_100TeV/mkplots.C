@@ -90,47 +90,47 @@ mkplots(){
    
    
    TCanvas * c1 = new TCanvas("c1", "");
-   TLegend * leg1 = new TLegend(0.7, 0.65, 0.85, 0.85);
+   TLegend * leg1 = new TLegend(0.65, 0.65, 0.80, 0.85);
    c1->SetLogy();
    c1->cd();
    THStack * hmet_bkg = GetBkgStack(f, "h0met_nopu", "Missing Transverse Energy [GeV]", leg1);
-   TH1F    * hmet_sig1 = GetSigHist(f, "h0met_nopu", "100TEVPU", MYRED1, LSOLID, leg1, "HXX (1 GeV)");
-   hmet_sig1->Scale(1E3);
+   TH1F    * hmet_sig1 = GetSigHist(f, "h0met_nopu", "hxx_100GeV", MYRED1, LSOLID, leg1, "HXX (100 GeV)");
+   hmet_sig1->Scale(1E4);
    hmet_sig1->SetLineWidth(2);
    hmet_sig1->Draw("HSAME");
    hmet_bkg->Draw("HSAME");
    hmet_sig1->Draw("HSAME");
    leg1->Draw();
-   hmet_sig1->SetAxisRange(1E1, 1E7, "Y");
+   hmet_sig1->SetAxisRange(1E1, 5E7, "Y");
    hmet_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    c1->SaveAs("met_precuts.png");
   
-
    TCanvas * c2 = new TCanvas("c2", "");
-   TLegend * leg2 = new TLegend(0.7, 0.65, 0.85, 0.85);
+   TLegend * leg2 = new TLegend(0.65, 0.65, 0.80, 0.85);
    c2->SetLogy();
    c2->cd();
    THStack * hmet_bkg = GetBkgStack(f, "h1met_nopu", "Missing Transverse Energy [GeV]", leg2);
-   TH1F    * hmet_sig1 = GetSigHist(f, "h1met_nopu", "100TEVPU", MYRED1, LSOLID, leg2, "HXX (1 GeV)");
-   hmet_sig1->Scale(1E3);
+   TH1F    * hmet_sig1 = GetSigHist(f, "h1met_nopu", "hxx_1GeV", MYRED1, LSOLID, leg2, "HXX (100 GeV)");
+   hmet_sig1->Scale(1E4);
    hmet_sig1->SetLineWidth(2);
    hmet_sig1->Draw();
    hmet_bkg->Draw("HSAME");
    hmet_sig1->Draw("HSAME");
    leg2->Draw();
-   hmet_sig1->SetAxisRange(1E1, 1E7,"Y");
-   hmet_sig1->SetAxisRange(100., 499.,"X");
+   hmet_sig1->SetAxisRange(1E1, 1E6,"Y");
+   hmet_sig1->SetAxisRange(200., 499.,"X");
    hmet_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    //hmet_sig1->GetXaxis()->SetTitleSize(0.5);
    //hmet_bkg->GetXaxis()->SetRange(75., 250.);
    //hmet_bkg->GetYaxis()->SetRange(1E-4, 150.);
    c2->SaveAs("met_postcuts.png");
+
    
    TCanvas * c3 = new TCanvas("c3", "");
-   TLegend * leg3 = new TLegend(0.7, 0.65, 0.85, 0.85);
+   TLegend * leg3 = new TLegend(0.65, 0.65, 0.80, 0.85);
    //c3->SetLogy();
    c3->cd();
-   TH1F    * hmgg_sig1 = GetSigHist(f, "h0mgg", "100TEVPU", MYRED1, LSOLID, leg3, "HXX (1 GeV)");
+   TH1F    * hmgg_sig1 = GetSigHist(f, "h0mgg", "hxx_1GeV", MYRED1, LSOLID, leg3, "HXX (100 GeV)");
    TH1F    * hmgg_bkg1 = GetSigHist(f, "h0mgg", "ZH",  MYCYAN1,  LSOLID, leg3, "HZ");
    TH1F    * hmgg_bkg2 = GetSigHist(f, "h0mgg", "WH",  MYORANGE1, LSOLID, leg3, "HW");
    TH1F    * hmgg_bkg3 = GetSigHist(f, "h0mgg", "H",   MYBLUE1,  LSOLID, leg3, "H");
@@ -158,7 +158,7 @@ mkplots(){
    hmgg_bkg5->Draw("HSAME");
    hmgg_sig1->Draw("HSAME");
    leg3->Draw();
-   hmgg_sig1->SetAxisRange(0, 0.7,"Y");
+   hmgg_sig1->SetAxisRange(0, 0.65,"Y");
    //hmgg_sig1->SetAxisRange(100., 150.,"X");
    hmgg_sig1->GetXaxis()->SetTitle("Diphoton Invariant Mass [GeV]");
    hmgg_sig1->GetYaxis()->SetTitle("Fraction of Events");
@@ -169,12 +169,13 @@ mkplots(){
    l2->SetLineWidth(3);
    l2->Draw();
    c3->SaveAs("mgg.png");
-   
+
+
    TCanvas * c4 = new TCanvas("c4", "");
-   TLegend * leg4 = new TLegend(0.7, 0.65, 0.85, 0.85);
+   TLegend * leg4 = new TLegend(0.65, 0.65, 0.80, 0.85);
    //c3->SetLogy();
    c4->cd();
-   TH1F    * h0met_sig1 = GetSigHist(f, "h0met_nopu", "100TEVPU", MYRED1, LSOLID, leg4, "HXX (1 GeV)");
+   TH1F    * h0met_sig1 = GetSigHist(f, "h0met_nopu", "hxx_1GeV", MYRED1, LSOLID, leg4, "HXX (100 GeV)");
    TH1F    * h0met1 = GetSigHist(f, "h0met_nopu", "ZH",  MYCYAN1,  LSOLID, leg4, "HZ");
    TH1F    * h0met2 = GetSigHist(f, "h0met_nopu", "WH",  MYGREEN1, LSOLID, leg4, "HW");
    TH1F    * h0met3 = GetSigHist(f, "h0met_nopu", "H",   MYBLUE1,  LSOLID, leg4, "H");
@@ -202,15 +203,16 @@ mkplots(){
    h0met5     ->Draw("HSAME");
    h0met_sig1 ->Draw("HSAME");
    leg4       ->Draw();
-   h0met_sig1 ->SetAxisRange(0, 0.1,"Y");
+   h0met_sig1 ->SetAxisRange(0, 0.07,"Y");
    //h0met_sig1->SetAxisRange(100., 150.,"X");
    h0met_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    h0met_sig1->GetYaxis()->SetTitle("Fraction of Events");
-   TLine *l3 = new TLine(100, 0, 100, 0.04);
+   TLine *l3 = new TLine(200, 0, 200, 0.04);
    l3->SetLineWidth(3);
    l3->Draw();
    c4->SaveAs("met_unitnorm.png");
    
+   return;
    TCanvas * c6 = new TCanvas("c6", "");
    TLegend * leg6 = new TLegend(0.6, 0.65, 0.80, 0.90);
    leg6->SetFillStyle(0);
