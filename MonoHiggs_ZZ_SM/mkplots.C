@@ -11,7 +11,7 @@ enum {MYBLUE2    = kBlue-2};
 enum {MYRED1     = kRed};
 enum {MYRED2     = kRed-2};
 
-enum {FILL0 = 1001, FILL1 = 3004, FILL2 = 3013, FILL3 = 3005, FILL4=3014, FILL4 = 3007}; 
+enum {FILL0 = 1001, FILL1 = 3004, FILL2 = 3013, FILL3 = 3005, FILL4=3014, FILL5 = 3007}; 
 enum {FILLSIG1 = 3002, FILLSIG2 = 3003};
 
 enum {LSOLID=1, LDASHED=2};
@@ -20,7 +20,7 @@ enum {LSOLID=1, LDASHED=2};
 TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, const char * sample, const char * legsamp, int style, int color, int & n){
    char full_name[200];
    sprintf(full_name, "%s_%s", name, sample);
-   TH1F * h = f->Get(full_name);
+   TH1F * h = (TH1F *) f->Get(full_name);
    if (h){
       h->SetFillStyle(style);
       h->SetLineColor(color);
@@ -33,7 +33,7 @@ TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, cons
    return h;
 }
 
-THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, int & n, int mode==0){
+THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, int & n, int mode=0){
    char full_name[200];
    
    if (leg) {
@@ -45,7 +45,7 @@ THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend 
    sprintf(full_name, "stack_%s", name);
    THStack * stack = new THStack(full_name, "");
 
-   TH1F * h_base = f->Get(name);
+   TH1F * h_base = (TH1F *) f->Get(name);
    h_base->SetXTitle(xtitle);
    stack->SetHistogram(h_base);
    if (mode == 0)
@@ -66,7 +66,7 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, const char * xt
    char full_name[200];
 
    sprintf(full_name, "%s_%s", name, tag);
-   TH1F * h = f->Get(full_name);
+   TH1F * h = (TH1F *) f->Get(full_name);
 
    if(h){
      h->SetFillStyle(0);
@@ -80,7 +80,7 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, const char * xt
    return h;
 }
 
-mkplots(){
+void mkplots(){
    gStyle->SetOptStat(0);
 
    TFile * f = new TFile("latest.root");
@@ -161,7 +161,7 @@ mkplots(){
 
 
 
-
+/*
 
    return;
    TCanvas * c2 = new TCanvas("c2", "");
@@ -251,6 +251,6 @@ mkplots(){
    leg6->Draw();
    c6->SaveAs("plots/met_unitnorm.png");
 
-
+*/
 
 }

@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-
-from ROOT import *
 import numpy as np
+import matplotlib.pyplot as plt
 import math
 import sys
 
@@ -11,7 +9,7 @@ def dist(x1, x2, y1, y2):
 def times(time):
   times = []
   curtime = time[0]
-  cnt = 0 
+  cnt = 0
   for i in range(0, len(time)):
     if curtime == time[i]:
       continue
@@ -22,15 +20,15 @@ def times(time):
 def pix_per_frame(time):
   pix_cnt = []
   curtime = time[0]
-  cnt = 0 
+  cnt = 0
   for i in range(0, len(time)):
     if curtime == time[i]:
-      cnt = cnt + 1 
+      cnt = cnt + 1
       continue
     pix_cnt.append(cnt)
-    cnt = 0 
+    cnt = 0
     curtime = time[i]
-    cnt = 1 
+    cnt = 1
   return pix_cnt
 
 def sort_arrs_by_time(x, y, val, time):
@@ -234,6 +232,8 @@ def wedgeness_frame(xc, yc, ):
           y1 = yc[i][j]
           y2 = yc[i][k]
 
+
+
 # Sort arrays of frames into clusters
 def process_clusters(xarr, yarr, valarr):
   totclarr = []
@@ -286,112 +286,95 @@ def remove_hot_pix(x, y, val, time, mult_fact):
       tmpy.append(y[i])
       tmpval.append(val[i])
       tmptime.append(time[i])
-  x = tmpx
+  x = tmpx 
   y = tmpy
   val = tmpval
   time = tmptime
   return (x, y, val, time)
 
-def get_data(tree):
-  time = []
-  val  = []
-  x    = []
-  y    = []
-  avg3 = []
-  avg5 = []
-  orientx = []
-  orienty = []
-  orientz = []
-  for evt in t:
-    vval = np.array(evt.pix_val)
-    vx   = np.array(evt.pix_x)
-    vy   = np.array(evt.pix_y)
-    vavg3 = np.array(evt.pix_avg3)
-    vavg5 = np.array(evt.pix_avg5)
+#ID, x, y, val, pix_avg3, pix_avg5, pix_m, time, longitude, latitude = np.loadtxt(sys.argv[1], unpack = True)
+ID, x, y, val, avg3, avg5, pix_near_max, evt_ID, time, evt_gpsLon, evt_gpsLat, evt_pixAvg, evt_pixStd, evt_orientx, evt_orienty, evt_orientz, xb_, ID, xb_time, xb_L1thresh, xb_L2thresh = np.loadtxt(sys.argv[1], unpack = True)
 
-    for i in range(0, vval.size):
-      time.append(evt.t/1E3)
-      val.append(vval[i])
-      x.append(vx[i])
-      y.append(vy[i])
-      avg3.append(vavg3[i])
-      avg5.append(vavg5[i])
-      orientx.append(evt.orient_x)
-      orienty.append(evt.orient_y)
-      orientz.append(evt.orient_z)
-  return (time, val, x, y, avg3, avg5, orientx, orienty, orientz)
+x, y, val, time = remove_hot_pix(x, y, val, time, 0.05)
 
-if __name__ == "__main__":
- 
-  f = TFile(sys.argv[1])
-  t = f.Get("events")
-  time, val, x, y, avg3, avg5, orientx, orienty, orientz = get_data(t)
+print 'Hit rate over entire run: ', rate(time), 'frames/s'
 
-  gStyle.SetOptStat(0)
-  
-  # Book histograms
-  h0t   = TH1F("h0t",   "", 1000, 0, 1E4)
-  h0val = TH1F("h0val", "", 100,  0, 300)
-  h0x   = TH1F("h0x",   "", 500,  0, 500)
-  h0y   = TH1F("h0y",   "", 500,  0, 500)
-  h0xy  = TH2F("h0xy",  "", 500, 0, 500, 500, 0, 500);
-  h1t   = TH1F("h1t",   "", 1000, 0, 1E4)
-  h1val = TH1F("h1val", "", 100,  0, 300)
-  h1x   = TH1F("h1x",   "", 500,  0, 500)
-  h1y   = TH1F("h1y",   "", 500,  0, 500)
-  h1xy  = TH2F("h1xy",  "", 500, 0, 500, 500, 0, 500);
-  h1orientx = TH1F("h1orientx", "", 60, -5, 5)
-  h1orienty = TH1F("h1orienty", "", 60, -5, 5)
-  h1orientz = TH1F("h1orientz", "", 60, -5, 5)
-  h1clulen  = TH1F("h1clulen",  "", 100, 0, 100)
+# plot the number of x pixel hits
+plt.figure()
+nval, bins, patches = plt.hist(x, bins = 500, normed=0)
+plt.xlabel("X Pixel Hits")
 
-  for i in range(0, len(time)):
-    h0t  .Fill(time[i] - min(time))
-    h0val.Fill(val[i])
-    h0x  .Fill(x[i])
-    h0y  .Fill(y[i])
-    h0xy .Fill(x[i], y[i])
+# plot the number of y pixel hits
+plt.figure()
+nval, bins, patches = plt.hist(y, bins = 500, normed=0)
+plt.xlabel("Y Pixel Hits")
 
-  x, y, val, time = remove_hot_pix(x, y, val, time, 0.5)
-  
-  for i in range(0, len(time)):
-    h1t  .Fill(time[i] - min(time))
-    h1val.Fill(val[i])
-    h1x  .Fill(x[i])
-    h1y  .Fill(y[i])
-    h1xy .Fill(x[i], y[i])
-    h1orientx.Fill(orientx[i])
-    h1orienty.Fill(orienty[i])
-    h1orientz.Fill(orientz[i])
+# plot the number of pixel hits
+plt.figure()
+h, xedges, yedges = np.histogram2d(x, y, bins = 60, range=[[0,500], [0,500]])
+extent = [yedges[0], yedges[-1], xedges[-1], xedges[0]]
+plt.imshow(h, extent = extent, interpolation = 'nearest')
+plt.colorbar()
+plt.gca().invert_yaxis()
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Number of Pixel Hits")
 
-  print 'Hit rate over entire run: ', rate(time), 'frames/s'
+# plot the pixel vals
+plt.figure()
+nval, bins, patches = plt.hist(val, bins = 60, normed=1)
+plt.semilogy()
+plt.xlabel("Pixel Value")
+plt.ylabel("Fraction of Events")
+#plt.gca().set_yscale("log")
 
-  # reorganize x,y,val,time into array of arrays by time stamp
-  xarr, yarr, valarr = sort_arrs_by_time(x, y, val, time)
+# plot the pixel # vs time
+t = times(time)
+pix = pix_per_frame(time)
+plt.figure()
+plt.semilogy()
+plt.plot(t, pix)
+plt.xlabel("Time")
+plt.ylabel("Number of Hit Pixels")
 
-  # loop through arrs and classify as above or below hit thresh
-  #lowx, lowy, lowval, highx, highy, highval = sort_arrs_by_thresh(xarr, yarr, valarr, 15)
+# plot # pixels/frame
+plt.figure()
+plt.semilogy()
+n, bins, patches = plt.hist(pix, 30, normed=1)
+plt.xlabel("Pixels/frame")
+plt.ylabel("Fraction of Events")
 
-  # process clusters
-  totclucnt, clulengths = process_clusters(xarr, yarr, valarr)
+# reorganize x,y,val,time into array of arrays by time stamp
+xarr, yarr, valarr = sort_arrs_by_time(x, y, val, time)
 
-  for i in range(0, len(clulengths)):
-    if clulengths[i] > 0:
-      h1clulen.Fill(clulengths[i])
-  
-  g = TFile("results/histos.root", "recreate")
-  h0t  .Write()
-  h0val.Write()
-  h0x  .Write()
-  h0y  .Write()
-  h0xy .Write()
-  h1t  .Write()
-  h1val.Write()
-  h1x  .Write()
-  h1y  .Write()
-  h1xy .Write()
-  h1orientx.Write()
-  h1orienty.Write()
-  h1orientz.Write()
-  h1clulen.Write()
-  g.Close()
+# loop through arrs and classify as above or below hit thresh
+lowx, lowy, lowval, highx, highy, highval = sort_arrs_by_thresh(xarr, yarr, valarr, 15)
+
+# process clusters
+totclucnt, clulengths = process_clusters(highx, highy, highval)
+
+# plot # clusters/frame
+plt.figure()
+n, bins, patches = plt.hist(totclucnt, 30, normed=1)
+plt.semilogy()
+plt.xlabel("Clusters/frame")
+plt.ylabel("Fraction of Events")
+
+# plt lengths of clusters
+plt.figure()
+n, bins, patches = plt.hist(clulengths, 60, normed=1)
+plt.xlabel("Cluster Length")
+plt.ylabel("Fraction of Events")
+
+#calculate ratio of pix hits to clusters per frame
+cnt = count_hit_pix(highx, highy, highval, 15)
+ratio = []
+for i in range(0, len(cnt)):
+  ratio.append(cnt[i]/totclucnt[i])
+plt.figure()
+n, bins, patches = plt.hist(ratio, 15, normed=1)
+plt.xlabel("(Hits/Cluster)/Frame")
+plt.ylabel("Fraction of Events")
+
+
+plt.show()

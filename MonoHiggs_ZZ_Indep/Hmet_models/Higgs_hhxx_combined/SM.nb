@@ -1,0 +1,803 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 6.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     31623,        794]
+NotebookOptionsPosition[     27929,        672]
+NotebookOutlinePosition[     28387,        690]
+CellTagsIndexPosition[     28344,        687]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Quit", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.4921467751527157`*^9, 3.492146776183146*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"$FeynRulesPath", "=", 
+  RowBox[{
+  "SetDirectory", "[", "\"\</home/difraa/FeynRules1.7\>\"", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.41265862251538*^9, 3.412658649947229*^9}, {
+  3.423415585782702*^9, 3.423415597189939*^9}, {3.4234163173467493`*^9, 
+  3.4234163227881193`*^9}, {3.574612688860794*^9, 3.574612701618739*^9}}],
+
+Cell[BoxData["\<\"/home/difraa/FeynRules1.7\"\>"], "Output",
+ CellChangeTimes->{
+  3.574628012963667*^9, 3.574630026199029*^9, 3.574636186619546*^9, 
+   3.574702465849156*^9, 3.574703060295616*^9, 3.5747038707349052`*^9, 
+   3.5747040198031893`*^9, 3.5748193499372168`*^9, 3.574819421053871*^9, 
+   3.5856839317187023`*^9, 3.585684056898205*^9, 3.585684209989422*^9, 
+   3.585684252457839*^9, 3.585684287284897*^9, 3.58568431949219*^9, 
+   3.5856845745865192`*^9, {3.585684605654499*^9, 3.585684629829226*^9}, 
+   3.585684721834681*^9, 3.585684820873569*^9, 3.585684906381116*^9, 
+   3.585685064332902*^9, 3.585685123411455*^9, 3.585685336241077*^9, 
+   3.585686885204871*^9, 3.585686960561678*^9, {3.585686995752335*^9, 
+   3.5856870682789383`*^9}, 3.585687119997909*^9, 3.585687781475164*^9, 
+   3.585687852036662*^9, 3.585687894850238*^9, 3.585687935997917*^9, 
+   3.5856879763831778`*^9, 3.585688011204534*^9, 3.585688046237824*^9, 
+   3.585688174216943*^9, 3.585688367222245*^9, 3.585688681893758*^9, 
+   3.585688818135771*^9, 3.585688952623802*^9, 3.5856895638146973`*^9, 
+   3.585689838119993*^9, 3.585787762216545*^9, 3.585787900586768*^9, 
+   3.585788107062434*^9, 3.5857882085572157`*^9, 3.5857883456218033`*^9, 
+   3.585788780395981*^9, 3.585789046375759*^9, 3.585789350796474*^9, 
+   3.5857895804712963`*^9, 3.5857896901517344`*^9, 3.585789788153878*^9, 
+   3.585789930511455*^9, 3.585789976536982*^9, 3.5857900853035507`*^9, 
+   3.585790621210737*^9, 3.58579107825455*^9, 3.585792159770626*^9, 
+   3.585792263995471*^9, 3.585792396001605*^9, 3.585794301305067*^9, 
+   3.5857943695705757`*^9, 3.585794517443816*^9, 3.585794630716625*^9, 
+   3.585877186234531*^9, 3.585877751164763*^9, 3.5858778260657473`*^9, 
+   3.585877950044052*^9, 3.5858784113606987`*^9, 3.585878946511018*^9, 
+   3.585879132018124*^9, 3.585879250519045*^9, 3.58587933035364*^9, 
+   3.5858802711456137`*^9, 3.585884144086604*^9, 3.585884215392277*^9, 
+   3.586848460520479*^9, 3.58684883951227*^9, 3.587308259426324*^9, 
+   3.587510829476204*^9, 3.588524855188393*^9, 3.588534727132525*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"<<", "FeynRules`"}]], "Input",
+ CellChangeTimes->{{3.547535564344927*^9, 3.547535564971527*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\" - FeynRules - \"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729526424*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Version: \"\>", "\[InvisibleSpace]", "\<\"1.7.160\"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{"\<\" (\"\>", " ", "\<\"26 March 2013\"\>"}], 
+   "\[InvisibleSpace]", "\<\").\"\>"}],
+  SequenceForm["Version: ", "1.7.160", " (" "26 March 2013", ")."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729571521*^9}],
+
+Cell[BoxData["\<\"Authors: A. Alloul, N. Christensen, C. Degrande, C. Duhr, \
+B. Fuks\"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729577409*^9}],
+
+Cell[BoxData["\<\" \"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729581476*^9}],
+
+Cell[BoxData["\<\"Please cite: Comput.Phys.Commun.180:1614-1641,2009 \
+(arXiv:0806.4194).\"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729585906*^9}],
+
+Cell[BoxData["\<\"http://feynrules.phys.ucl.ac.be\"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.5885347295900993`*^9}],
+
+Cell[BoxData["\<\" \"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729594161*^9}],
+
+Cell[BoxData["\<\"The FeynRules palette can be opened using the command \
+FRPalette[].\"\>"], "Print",
+ CellChangeTimes->{3.588524857751979*^9, 3.588534729598329*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"$FeynRulesPath", "<>", "\"\</Models/Higgs_hhxx_combined\>\""}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.419073170860696*^9, 3.419073182827229*^9}, {
+  3.574628025334359*^9, 3.574628032050297*^9}, {3.574819356227006*^9, 
+  3.5748193608235617`*^9}, {3.575651836284923*^9, 3.575651840783317*^9}, {
+  3.58568388744915*^9, 3.585683893055037*^9}, {3.588524759606879*^9, 
+  3.588524761745823*^9}, {3.5885248818991127`*^9, 3.588524900000452*^9}, {
+  3.59312213166721*^9, 3.593122139176653*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"LoadModel", "[", "\"\<Higgs_hhxx_combined.fr\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.4022069973481913`*^9, 3.402207011768662*^9}, 
+   3.4022081212072697`*^9, {3.402208250379383*^9, 3.402208254043104*^9}, 
+   3.4027466057480917`*^9, {3.403240270135737*^9, 3.403240277228945*^9}, 
+   3.403266503388291*^9, {3.403267649630335*^9, 3.40326765417397*^9}, {
+   3.403269919787421*^9, 3.403269921965273*^9}, {3.403347551273425*^9, 
+   3.403347555049163*^9}, 3.4044490490588417`*^9, {3.411744339876704*^9, 
+   3.411744340012457*^9}, {3.4121886924550533`*^9, 3.412188699157571*^9}, 
+   3.412188808811866*^9, 3.4121888580521603`*^9, {3.412450464077868*^9, 
+   3.412450464378695*^9}, {3.413715097460478*^9, 3.41371509757642*^9}, {
+   3.41440825334604*^9, 3.414408254159686*^9}, {3.41862573831756*^9, 
+   3.4186257392223186`*^9}, {3.4190731862389174`*^9, 3.419073187003003*^9}, {
+   3.419073336802393*^9, 3.4190733374513063`*^9}, {3.4190828041801767`*^9, 
+   3.4190828048079023`*^9}, 3.542453089813714*^9, 3.547534567644828*^9, {
+   3.574612726703023*^9, 3.574612730927166*^9}, {3.574819370540753*^9, 
+   3.574819372932844*^9}, {3.575651846320526*^9, 3.575651847217864*^9}, {
+   3.5856838951281977`*^9, 3.5856839010686827`*^9}, {3.5873441467307787`*^9, 
+   3.58734415067484*^9}, {3.5885248264745483`*^9, 3.5885248326067257`*^9}, {
+   3.588524888296472*^9, 3.588524902943119*^9}, {3.593122142883813*^9, 
+   3.593122146453888*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"This model implementation was created by\"\>"], "Print",
+ CellChangeTimes->{3.588534734775999*^9}],
+
+Cell[BoxData["\<\"Anthony DiFranzo\"\>"], "Print",
+ CellChangeTimes->{3.58853473481257*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Model Version: \"\>", "\[InvisibleSpace]", "\<\"1.0\"\>"}],
+  SequenceForm["Model Version: ", "1.0"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.588534734815716*^9}],
+
+Cell[BoxData["\<\"For more information, type ModelInformation[].\"\>"], \
+"Print",
+ CellChangeTimes->{3.5885347348187227`*^9}],
+
+Cell[BoxData["\<\"\"\>"], "Print",
+ CellChangeTimes->{3.588534734827512*^9}],
+
+Cell[BoxData["\<\"   - Loading particle classes.\"\>"], "Print",
+ CellChangeTimes->{3.5885347348291073`*^9}],
+
+Cell[BoxData["\<\"   - Loading gauge group classes.\"\>"], "Print",
+ CellChangeTimes->{3.588534735049201*^9}],
+
+Cell[BoxData["\<\"   - Loading parameter classes.\"\>"], "Print",
+ CellChangeTimes->{3.588534735085455*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\\nModel \"\>", "\[InvisibleSpace]", "\<\"Higgs_hxx\"\>", 
+   "\[InvisibleSpace]", "\<\" loaded.\"\>"}],
+  SequenceForm["\nModel ", "Higgs_hxx", " loaded."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.588534735246993*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"LoadRestriction", "[", 
+  RowBox[{"\"\<Massless.rst\>\"", ",", "\"\<DiagonalCKM.rst\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.547535575308606*^9, 3.547535589236651*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Loading restrictions from \"\>", 
+   "\[InvisibleSpace]", "\<\"Massless.rst\"\>", 
+   "\[InvisibleSpace]", "\<\" : \"\>", "\[InvisibleSpace]", 
+   DynamicBox[ToBoxes[PRIVATE`FR$restrictionCounter, StandardForm],
+    ImageSizeCache->{320., {3., 12.}}], "\[InvisibleSpace]", "\<\" / \"\>", 
+   "\[InvisibleSpace]", "18"}],
+  SequenceForm["Loading restrictions from ", "Massless.rst", " : ", 
+   Dynamic[PRIVATE`FR$restrictionCounter], " / ", 18],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.574628050470552*^9, 3.5746300398511*^9, 
+  3.5746362035194817`*^9, 3.5747024781706533`*^9, 3.5747030697217903`*^9, 
+  3.574703879950083*^9, 3.574704028045888*^9, 3.5748194316893272`*^9, 
+  3.585792406772406*^9, 3.5858842259856577`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Loading restrictions from \"\>", 
+   "\[InvisibleSpace]", "\<\"DiagonalCKM.rst\"\>", 
+   "\[InvisibleSpace]", "\<\" : \"\>", "\[InvisibleSpace]", 
+   DynamicBox[ToBoxes[PRIVATE`FR$restrictionCounter, StandardForm],
+    ImageSizeCache->{320., {3., 12.}}], "\[InvisibleSpace]", "\<\" / \"\>", 
+   "\[InvisibleSpace]", "3"}],
+  SequenceForm["Loading restrictions from ", "DiagonalCKM.rst", " : ", 
+   Dynamic[PRIVATE`FR$restrictionCounter], " / ", 3],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.574628050470552*^9, 3.5746300398511*^9, 
+  3.5746362035194817`*^9, 3.5747024781706533`*^9, 3.5747030697217903`*^9, 
+  3.574703879950083*^9, 3.574704028045888*^9, 3.5748194316893272`*^9, 
+  3.585792406772406*^9, 3.585884226162137*^9}],
+
+Cell[BoxData["\<\"Restrictions loaded.\"\>"], "Print",
+ CellChangeTimes->{3.574628050470552*^9, 3.5746300398511*^9, 
+  3.5746362035194817`*^9, 3.5747024781706533`*^9, 3.5747030697217903`*^9, 
+  3.574703879950083*^9, 3.574704028045888*^9, 3.5748194316893272`*^9, 
+  3.585792406772406*^9, 3.585884226238461*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"FeynmanRules", "[", "LSM", "]"}]], "Input",
+ CellChangeTimes->{{3.585689159327114*^9, 3.5856891658404408`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Checking the Lagrangian", "Section",
+ CellChangeTimes->{{3.4234156496121893`*^9, 3.423415657027569*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FeynmanGauge", "=", "True"}], ";"}]], "Input",
+ CellChangeTimes->{{3.4234159280429783`*^9, 3.423415934798614*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Checking hermiticity", "Subsection",
+ CellChangeTimes->{{3.4234156831783743`*^9, 3.423415689540821*^9}}],
+
+Cell["The hermiticity of the Lagrangian can be checked via", "Text",
+ CellChangeTimes->{{3.423415694323595*^9, 3.423415707867804*^9}}],
+
+Cell[BoxData[
+ RowBox[{"CheckHermiticity", "[", 
+  RowBox[{"LSM", ",", 
+   RowBox[{"FlavorExpand", "\[Rule]", "SU2W"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.414763473002973*^9, 3.4147634845507174`*^9}}],
+
+Cell["\<\
+The same command can be applied to the flavor - expanded Lagrangian\
+\>", "Text",
+ CellChangeTimes->{{3.423415721582508*^9, 3.423415739787958*^9}}],
+
+Cell[BoxData[
+ RowBox[{"CheckHermiticity", "[", 
+  RowBox[{"LSM", ",", 
+   RowBox[{"FlavorExpand", "\[Rule]", "True"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.414763604111637*^9, 3.4147636044973803`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Checking the mass spectrum", "Subsection",
+ CellChangeTimes->{{3.423415831209465*^9, 3.423415835278742*^9}, 
+   3.585688447361137*^9}],
+
+Cell["\<\
+FeynRules can check whether all the values of the masses given in the model \
+file ar ein agreement with the masses given in the Lagrangian:\
+\>", "Text",
+ CellChangeTimes->{{3.423415751305388*^9, 3.423415792594919*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CheckMassSpectrum", "[", "LSM", "]"}]], "Input",
+ CellChangeTimes->{{3.414736325829801*^9, 3.414736326065997*^9}, 
+   3.4147528281460342`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Neglecting all terms with more than \"\>", 
+   "\[InvisibleSpace]", "\<\"2\"\>", 
+   "\[InvisibleSpace]", "\<\" particles.\"\>"}],
+  SequenceForm["Neglecting all terms with more than ", "2", " particles."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5748194616924353`*^9, 3.585684775258277*^9, 
+  3.5856880973822927`*^9, 3.585688203096106*^9, 3.585688460584251*^9, 
+  3.58568871211664*^9, 3.585688838784164*^9, 3.585688979764789*^9, 
+  3.58579093608741*^9, 3.585791110843944*^9, 3.585791913803056*^9, 
+  3.585792190126897*^9, 3.585792303813147*^9, 3.585792438560875*^9, 
+  3.5857944009744368`*^9, 3.585794541327333*^9, 3.585794658031899*^9}],
+
+Cell[BoxData["\<\"All mass terms are diagonal.\"\>"], "Print",
+ CellChangeTimes->{3.5748194616924353`*^9, 3.585684775258277*^9, 
+  3.5856880973822927`*^9, 3.585688203096106*^9, 3.585688460584251*^9, 
+  3.58568871211664*^9, 3.585688838784164*^9, 3.585688979764789*^9, 
+  3.58579093608741*^9, 3.585791110843944*^9, 3.585791913803056*^9, 
+  3.585792190126897*^9, 3.585792303813147*^9, 3.585792438560875*^9, 
+  3.5857944009744368`*^9, 3.585794541327333*^9, 3.585794659255978*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Neglecting all terms with more than \"\>", 
+   "\[InvisibleSpace]", "\<\"2\"\>", 
+   "\[InvisibleSpace]", "\<\" particles.\"\>"}],
+  SequenceForm["Neglecting all terms with more than ", "2", " particles."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5748194616924353`*^9, 3.585684775258277*^9, 
+  3.5856880973822927`*^9, 3.585688203096106*^9, 3.585688460584251*^9, 
+  3.58568871211664*^9, 3.585688838784164*^9, 3.585688979764789*^9, 
+  3.58579093608741*^9, 3.585791110843944*^9, 3.585791913803056*^9, 
+  3.585792190126897*^9, 3.585792303813147*^9, 3.585792438560875*^9, 
+  3.5857944009744368`*^9, 3.585794541327333*^9, 3.58579466908635*^9}],
+
+Cell[BoxData["\<\"Getting mass spectrum.\"\>"], "Print",
+ CellChangeTimes->{3.5748194616924353`*^9, 3.585684775258277*^9, 
+  3.5856880973822927`*^9, 3.585688203096106*^9, 3.585688460584251*^9, 
+  3.58568871211664*^9, 3.585688838784164*^9, 3.585688979764789*^9, 
+  3.58579093608741*^9, 3.585791110843944*^9, 3.585791913803056*^9, 
+  3.585792190126897*^9, 3.585792303813147*^9, 3.585792438560875*^9, 
+  3.5857944009744368`*^9, 3.585794541327333*^9, 3.585794670220764*^9}],
+
+Cell[BoxData["\<\"Checking for less then 0.1% agreement with model file \
+values.\"\>"], "Print",
+ CellChangeTimes->{3.5748194616924353`*^9, 3.585684775258277*^9, 
+  3.5856880973822927`*^9, 3.585688203096106*^9, 3.585688460584251*^9, 
+  3.58568871211664*^9, 3.585688838784164*^9, 3.585688979764789*^9, 
+  3.58579093608741*^9, 3.585791110843944*^9, 3.585791913803056*^9, 
+  3.585792190126897*^9, 3.585792303813147*^9, 3.585792438560875*^9, 
+  3.5857944009744368`*^9, 3.585794541327333*^9, 3.585794670238844*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Checking the kinetic terms", "Subsection",
+ CellChangeTimes->{{3.423415843532096*^9, 3.42341584850035*^9}}],
+
+Cell["\<\
+In the same way, FeynRules can check whether all kinetic terms are correctly \
+normalized :\
+\>", "Text",
+ CellChangeTimes->{{3.423415798800013*^9, 3.423415817964087*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CheckKineticTermNormalisation", "[", 
+  RowBox[{"LSM", ",", 
+   RowBox[{"FlavorExpand", "\[Rule]", "SU2W"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.4147636651636972`*^9, 3.414763667250185*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Neglecting all terms with more than \"\>", 
+   "\[InvisibleSpace]", "\<\"2\"\>", 
+   "\[InvisibleSpace]", "\<\" particles.\"\>"}],
+  SequenceForm["Neglecting all terms with more than ", "2", " particles."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5748195409386063`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Non diagonal kinetic term found: \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    SubscriptBox["c", "w"], " ", 
+    SubscriptBox["s", "w"], " ", 
+    RowBox[{
+     SuperscriptBox["ghA", "\[Dagger]"], ".", 
+     RowBox[{
+      SubscriptBox["\<\"\[PartialD]\"\>", "mu"], "[", 
+      RowBox[{
+       SubscriptBox["\<\"\[PartialD]\"\>", "mu"], "[", "ghZ", "]"}], 
+      "]"}]}]}]}],
+  SequenceForm[
+  "Non diagonal kinetic term found: ", ($CellContext`cw $CellContext`sw) 
+   Dot[$CellContext`ghAbar, 
+     FeynRules`del[
+      FeynRules`del[$CellContext`ghZ, 
+       FeynRules`Index[FeynRules`Lorentz, FeynRules`mu]], 
+      FeynRules`Index[FeynRules`Lorentz, FeynRules`mu]]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.574819541149887*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Non diagonal kinetic term found: \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    SubscriptBox["c", "w"], " ", 
+    SubscriptBox["s", "w"], " ", 
+    RowBox[{
+     SuperscriptBox["ghZ", "\[Dagger]"], ".", 
+     RowBox[{
+      SubscriptBox["\<\"\[PartialD]\"\>", "mu"], "[", 
+      RowBox[{
+       SubscriptBox["\<\"\[PartialD]\"\>", "mu"], "[", "ghA", "]"}], 
+      "]"}]}]}]}],
+  SequenceForm[
+  "Non diagonal kinetic term found: ", ($CellContext`cw $CellContext`sw) 
+   Dot[$CellContext`ghZbar, 
+     FeynRules`del[
+      FeynRules`del[$CellContext`ghA, 
+       FeynRules`Index[FeynRules`Lorentz, FeynRules`mu]], 
+      FeynRules`Index[FeynRules`Lorentz, FeynRules`mu]]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.574819541152357*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell["\<\
+The same command cen be used at the level of the flavor - expanded Lagrangian \
+:\
+\>", "Text",
+ CellChangeTimes->{{3.423415868906054*^9, 3.4234158864202538`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"CheckKineticTermNormalisation", "[", 
+  RowBox[{"LSM", ",", 
+   RowBox[{"FlavorExpand", "\[Rule]", "True"}]}], "]"}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["UFO output", "Subsection",
+ CellChangeTimes->{{3.4119110460271273`*^9, 3.411911049405038*^9}, {
+  3.411911150323291*^9, 3.4119111515122623`*^9}, {3.5074389822322817`*^9, 
+  3.507438983565652*^9}, {3.507439158477231*^9, 3.507439159035309*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"WriteUFO", "[", "LSM", "]"}]], "Input",
+ CellChangeTimes->{{3.574628060977602*^9, 3.574628070306349*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\" --- Universal FeynRules Output (UFO) v 1.1 ---\"\>"], \
+"Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308279185001*^9}],
+
+Cell[BoxData[
+ StyleBox["\<\"Starting Feynman rule calculation.\"\>",
+  StripOnInput->False,
+  LineColor->RGBColor[1, 0.5, 0],
+  FrontFaceColor->RGBColor[1, 0.5, 0],
+  BackFaceColor->RGBColor[1, 0.5, 0],
+  GraphicsColor->RGBColor[1, 0.5, 0],
+  FontWeight->Bold,
+  FontColor->RGBColor[1, 0.5, 0]]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308280088241*^9}],
+
+Cell[BoxData["\<\"Expanding the Lagrangian...\"\>"], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.5873082800989933`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Expansion of indices distributed over \"\>", 
+   "\[InvisibleSpace]", "2", "\[InvisibleSpace]", "\<\" kernels.\"\>"}],
+  SequenceForm["Expansion of indices distributed over ", 2, " kernels."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308280103981*^9}],
+
+Cell[BoxData["\<\"Collecting the different structures that enter the \
+vertex.\"\>"], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.58730828366722*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+  "195", "\[InvisibleSpace]", "\<\" possible non-zero vertices have been \
+found -> starting the computation: \"\>", "\[InvisibleSpace]", 
+   DynamicBox[ToBoxes[FeynRules`FR$FeynmanRules, StandardForm],
+    ImageSizeCache->{275., {3., 12.}}], "\[InvisibleSpace]", "\<\" / \"\>", 
+   "\[InvisibleSpace]", "195", "\[InvisibleSpace]", "\<\".\"\>"}],
+  SequenceForm[
+  195, " possible non-zero vertices have been found -> starting the \
+computation: ", 
+   Dynamic[FeynRules`FR$FeynmanRules], " / ", 195, "."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308283778489*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"190", "\[InvisibleSpace]", "\<\" vertices obtained.\"\>"}],
+  SequenceForm[190, " vertices obtained."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.5873082901700373`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Flavor expansion of the vertices distributed over \"\>", 
+   "\[InvisibleSpace]", "2", "\[InvisibleSpace]", "\<\" kernels.\"\>"}],
+  SequenceForm[
+  "Flavor expansion of the vertices distributed over ", 2, " kernels."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.5873082907721767`*^9}],
+
+Cell[BoxData["\<\"   - Saved vertices in InterfaceRun[ 1 ].\"\>"], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308295710476*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Computing the squared matrix elements relevant for the 1->2 \
+decays: \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[1, 0.5, 0],
+    FrontFaceColor->RGBColor[1, 0.5, 0],
+    BackFaceColor->RGBColor[1, 0.5, 0],
+    GraphicsColor->RGBColor[1, 0.5, 0],
+    FontWeight->Bold,
+    FontColor->RGBColor[1, 0.5, 0]], "\[InvisibleSpace]", 
+   DynamicBox[ToBoxes[FeynRules`FR$DecayCounter, StandardForm],
+    ImageSizeCache->{276., {3., 12.}}], "\[InvisibleSpace]", "\<\" / \"\>", 
+   "\[InvisibleSpace]", "164"}],
+  SequenceForm[
+   Style["Computing the squared matrix elements relevant for the 1->2 decays: \
+", 
+    RGBColor[1, 0.5, 0], Bold], 
+   Dynamic[FeynRules`FR$DecayCounter], " / ", 164],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308295792397*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Squared matrix elent compute in \"\>", "\[InvisibleSpace]", 
+   "1.060065999999999`", "\[InvisibleSpace]", "\<\" seconds.\"\>"}],
+  SequenceForm[
+  "Squared matrix elent compute in ", 1.060065999999999, " seconds."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.5873083000269117`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Decay widths computed in \"\>", "\[InvisibleSpace]", 
+   "0.8200509999999976`", "\[InvisibleSpace]", "\<\" seconds.\"\>"}],
+  SequenceForm["Decay widths computed in ", 0.8200509999999976, " seconds."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308302049268*^9}],
+
+Cell[BoxData["\<\"Preparing Python output.\"\>"], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308302071087*^9}],
+
+Cell[BoxData["\<\"    - Splitting vertices into building blocks.\"\>"], \
+"Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308302464554*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Splitting of vertices distributed over \"\>", 
+   "\[InvisibleSpace]", "2", "\[InvisibleSpace]", "\<\" kernels.\"\>"}],
+  SequenceForm["Splitting of vertices distributed over ", 2, " kernels."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308302519566*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    - Optimizing: \"\>", "\[InvisibleSpace]", 
+   DynamicBox[ToBoxes[PRIVATE`PY$SplitVertexCounter, StandardForm],
+    ImageSizeCache->{320., {3., 12.}}], "\[InvisibleSpace]", "\<\"/\"\>", 
+   "\[InvisibleSpace]", "399", "\[InvisibleSpace]", "\<\" .\"\>"}],
+  SequenceForm["    - Optimizing: ", 
+   Dynamic[PRIVATE`PY$SplitVertexCounter], "/", 399, " ."],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.58730830322512*^9}],
+
+Cell[BoxData["\<\"    - Writing files.\"\>"], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308303624195*^9}],
+
+Cell[BoxData["\<\"Done!\"\>"], "Print",
+ CellChangeTimes->{3.5746280769165*^9, 3.574630059090789*^9, 
+  3.574636251802215*^9, 3.574702490316144*^9, 3.574703079874489*^9, 
+  3.574703891701208*^9, 3.574704037757922*^9, 3.574819558520348*^9, 
+  3.585688768661132*^9, 3.58684850317909*^9, 3.586848861319137*^9, 
+  3.587308304292199*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1073, 637},
+WindowMargins->{{Automatic, 110}, {35, Automatic}},
+ShowSelection->True,
+Magnification:>FEPrivate`If[
+  FEPrivate`Equal[FEPrivate`$VersionNumber, 6.], 1.5, 1.5 Inherited],
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (November 7, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[545, 20, 120, 2, 43, "Input"],
+Cell[CellGroupData[{
+Cell[690, 26, 351, 7, 43, "Input"],
+Cell[1044, 35, 2073, 29, 43, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3154, 69, 120, 2, 43, "Input"],
+Cell[CellGroupData[{
+Cell[3299, 75, 113, 1, 33, "Print"],
+Cell[3415, 78, 390, 8, 33, "Print"],
+Cell[3808, 88, 165, 2, 33, "Print"],
+Cell[3976, 92, 99, 1, 33, "Print"],
+Cell[4078, 95, 169, 2, 33, "Print"],
+Cell[4250, 99, 131, 1, 33, "Print"],
+Cell[4384, 102, 99, 1, 33, "Print"],
+Cell[4486, 105, 166, 2, 33, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[4679, 111, 564, 10, 43, "Input"],
+Cell[CellGroupData[{
+Cell[5268, 125, 1444, 20, 43, "Input"],
+Cell[CellGroupData[{
+Cell[6737, 149, 116, 1, 33, "Print"],
+Cell[6856, 152, 91, 1, 33, "Print"],
+Cell[6950, 155, 222, 5, 33, "Print"],
+Cell[7175, 162, 126, 2, 33, "Print"],
+Cell[7304, 166, 76, 1, 33, "Print"],
+Cell[7383, 169, 108, 1, 33, "Print"],
+Cell[7494, 172, 109, 1, 33, "Print"],
+Cell[7606, 175, 107, 1, 33, "Print"],
+Cell[7716, 178, 278, 6, 61, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8043, 190, 201, 4, 43, "Input"],
+Cell[CellGroupData[{
+Cell[8269, 198, 780, 14, 33, "Print"],
+Cell[9052, 214, 782, 14, 33, "Print"],
+Cell[9837, 230, 309, 4, 33, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[10173, 238, 135, 2, 43, "Input"],
+Cell[CellGroupData[{
+Cell[10333, 244, 110, 1, 106, "Section"],
+Cell[10446, 247, 149, 3, 43, "Input"],
+Cell[CellGroupData[{
+Cell[10620, 254, 110, 1, 55, "Subsection"],
+Cell[10733, 257, 134, 1, 42, "Text"],
+Cell[10870, 260, 206, 4, 43, "Input"],
+Cell[11079, 266, 157, 3, 42, "Text"],
+Cell[11239, 271, 206, 4, 43, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11482, 280, 140, 2, 55, "Subsection"],
+Cell[11625, 284, 230, 4, 68, "Text"],
+Cell[CellGroupData[{
+Cell[11880, 292, 166, 3, 64, "Input"],
+Cell[CellGroupData[{
+Cell[12071, 299, 698, 12, 49, "Print"],
+Cell[12772, 313, 475, 6, 49, "Print"],
+Cell[13250, 321, 697, 12, 49, "Print"],
+Cell[13950, 335, 469, 6, 49, "Print"],
+Cell[14422, 343, 510, 7, 73, "Print"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14993, 357, 113, 1, 123, "Subsection"],
+Cell[15109, 360, 181, 4, 94, "Text"],
+Cell[CellGroupData[{
+Cell[15315, 368, 219, 4, 96, "Input"],
+Cell[CellGroupData[{
+Cell[15559, 376, 329, 7, 73, "Print"],
+Cell[15891, 385, 791, 21, 73, "Print"],
+Cell[16685, 408, 791, 21, 73, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[17503, 433, 173, 4, 94, "Text"],
+Cell[17679, 439, 151, 3, 96, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17867, 447, 248, 3, 123, "Subsection"],
+Cell[CellGroupData[{
+Cell[18140, 454, 129, 2, 96, "Input"],
+Cell[CellGroupData[{
+Cell[18294, 460, 376, 6, 73, "Print"],
+Cell[18673, 468, 599, 13, 73, "Print"],
+Cell[19275, 483, 356, 5, 73, "Print"],
+Cell[19634, 490, 564, 10, 73, "Print"],
+Cell[20201, 502, 386, 6, 73, "Print"],
+Cell[20590, 510, 874, 17, 136, "Print"],
+Cell[21467, 529, 473, 9, 73, "Print"],
+Cell[21943, 540, 593, 11, 73, "Print"],
+Cell[22539, 553, 368, 5, 73, "Print"],
+Cell[22910, 560, 1083, 25, 136, "Print"],
+Cell[23996, 587, 590, 11, 73, "Print"],
+Cell[24589, 600, 573, 10, 73, "Print"],
+Cell[25165, 612, 351, 5, 73, "Print"],
+Cell[25519, 619, 375, 6, 73, "Print"],
+Cell[25897, 627, 566, 10, 73, "Print"],
+Cell[26466, 639, 726, 13, 73, "Print"],
+Cell[27195, 654, 347, 5, 73, "Print"],
+Cell[27545, 661, 332, 5, 73, "Print"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
