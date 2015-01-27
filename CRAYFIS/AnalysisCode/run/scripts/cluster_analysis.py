@@ -4,6 +4,7 @@ from ROOT import *
 import numpy as np
 import math
 import sys
+import argparse
 
 def dist(x1, x2, y1, y2):
   return math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
@@ -38,27 +39,32 @@ def sort_arrs_by_time(x, y, val, time):
   xarr = []
   yarr = []
   valarr = []
+  tarr = []
   xtemp = []
   ytemp = []
   valtemp = []
+  ttemp = []
   for i in range(0, len(time)):
     if curtime == time[i]:
       xtemp.append(x[i])
       ytemp.append(y[i])
       valtemp.append(val[i])
+      ttemp.append(time[i])
       continue
     curtime = time[i]
     xarr.append(xtemp)
     yarr.append(ytemp)
     valarr.append(valtemp)
+    tarr.append(ttemp)
     xtemp = []
     ytemp = []
     valtemp = []
+    ttemp = []
     xtemp.append(x[i])
     ytemp.append(y[i])
     valtemp.append(val[i])
-  #print xarr
-  return (xarr, yarr, valarr)
+    ttemp.append(time[i])
+  return (xarr, yarr, valarr, tarr)
 
 def sort_arrs_by_thresh(xarr, yarr, valarr, thresh):
   lowx = []
@@ -96,21 +102,23 @@ def count_hit_pix(xarr, yarr, valarr, thresh):
     tempcnt = 0
   return cnt
 
-def count_hits(time):
+def count_hits(time, tstart, tend):
   time = sorted(time)
   times = []
   curtime = time[0]
   cnt = 0
   for i in range(0, len(time)):
+    if time[i] < tstart or time[i] > tend: continue
     if curtime == time[i]:
       continue
     times.append(curtime)
     curtime = time[i]
   return len(times)
 
-def rate(time):
+def rate(time, tstart, tend):
   time = sorted(time)
-  return count_hits(time) / (time[-1] - time[0])
+  return count_hits(time, tstart, tend) / (tend - tstart)
+  #return count_hits(time, tstart, tend) / (time[-1] - time[0])
 
 # This function uses the x and y arrays of a single frame to create a cluster array that has 
 # the indexes separated into the different clusters according to thier x and y positions.
@@ -235,13 +243,14 @@ def wedgeness_frame(xc, yc, ):
           y2 = yc[i][k]
 
 # Sort arrays of frames into clusters
-def process_clusters(xarr, yarr, valarr):
+def process_clusters(xarr, yarr, valarr, tarr):
   totclarr = []
   for i in range(0, len(xarr)):
     totclarr.append(cluster_frame(xarr[i], yarr[i]))
   totxclu = []
   totyclu = []
   totvalclu = []
+  tottclu = []
   totclucnt = []
   for i in range(0, len(totclarr)):
     tmpx, tmpy, tmpval = cluster_merge_frame(xarr[i], yarr[i], valarr[i], totclarr[i])
@@ -249,15 +258,23 @@ def process_clusters(xarr, yarr, valarr):
     totyclu.append(tmpy)
     totvalclu.append(tmpval)
     totclucnt.append(len(tmpx))
+    tottclu.append(tarr[i])
   totclulen = []
   for i in range(0, len(totxclu)):
     totclulen.append(cluster_length_frame(totxclu[i], totyclu[i]))
   clulengths = []
+  trackt = []
+  hastrack = False
   for i in range(0, len(totclulen)):
     for j in range(0, len(totclulen[i])):
       if totclulen[i][j] > 1:
         clulengths.append(totclulen[i][j])
-  return (totclucnt, clulengths)
+      if totclulen[i][j] > 10:
+        hastrack = True
+    if hastrack == True:
+      trackt.append(tottclu[i][0])
+    hastrack = False
+  return (totxclu, totyclu, totvalclu, totclucnt, clulengths, trackt)
 
 def remove_hot_pix(x, y, val, time, mult_fact):
   tmpx = []
@@ -316,70 +333,101 @@ def get_data(tree):
       y.append(vy[i])
       avg3.append(vavg3[i])
       avg5.append(vavg5[i])
-      orientx.append(evt.orient_x)
-      orienty.append(evt.orient_y)
-      orientz.append(evt.orient_z)
+      #orientx.append(evt.orient_x)
+      #orienty.append(evt.orient_y)
+      #orientz.append(evt.orient_z)
   return (time, val, x, y, avg3, avg5, orientx, orienty, orientz)
 
 if __name__ == "__main__":
  
-  f = TFile(sys.argv[1])
+  parser = argparse.ArgumentParser(description="Analyze single phone run")
+  parser.add_argument('--dev', required=True, help='the device ID')
+  parser.add_argument('--runfile', required=True, help='the root file for the run')
+  parser.add_argument('--hotpix', default=0.5, type=float, help='remove pixels with occ > hotpix * avgocc')
+  
+  args = parser.parse_args()
+
+  f = TFile(args.runfile)
   t = f.Get("events")
   time, val, x, y, avg3, avg5, orientx, orienty, orientz = get_data(t)
 
-  gStyle.SetOptStat(0)
+  #gStyle.SetOptStat(0)
   
   # Book histograms
-  h0t   = TH1F("h0t",   "", 1000, 0, 1E4)
-  h0val = TH1F("h0val", "", 100,  0, 300)
-  h0x   = TH1F("h0x",   "", 500,  0, 500)
-  h0y   = TH1F("h0y",   "", 500,  0, 500)
-  h0xy  = TH2F("h0xy",  "", 500, 0, 500, 500, 0, 500);
-  h1t   = TH1F("h1t",   "", 1000, 0, 1E4)
-  h1val = TH1F("h1val", "", 100,  0, 300)
-  h1x   = TH1F("h1x",   "", 500,  0, 500)
-  h1y   = TH1F("h1y",   "", 500,  0, 500)
-  h1xy  = TH2F("h1xy",  "", 500, 0, 500, 500, 0, 500);
-  h1orientx = TH1F("h1orientx", "", 60, -5, 5)
-  h1orienty = TH1F("h1orienty", "", 60, -5, 5)
-  h1orientz = TH1F("h1orientz", "", 60, -5, 5)
-  h1clulen  = TH1F("h1clulen",  "", 100, 0, 100)
+  h0t       = TH1F("h0t",       "", 1000, 0,  5E5)
+  h0val     = TH1F("h0val",     "", 100,  0,  300)
+  h0x       = TH1F("h0x",       "", 500,  0,  500)
+  h0y       = TH1F("h0y",       "", 500,  0,  500)
+  h0xy      = TH2F("h0xy",      "", 500,  0,  500, 500, 0, 500);
+  h1t       = TH1F("h1t",       "", 1000, 0,  5E5)
+  h1trackt  = TH1F("h1trackt",  "", 1000, 0,  5E5)
+  h1val     = TH1F("h1val",     "", 100,  0,  300)
+  h1valclu  = TH1F("h1valclu",  "", 100,  0,  300)
+  h1x       = TH1F("h1x",       "", 500,  0,  500)
+  h1y       = TH1F("h1y",       "", 500,  0,  500)
+  h1xy      = TH2F("h1xy",      "", 500,  0,  500, 500, 0, 500);
+  h1xyclu   = TH2F("h1xyclu",   "", 500,  0,  500, 500, 0, 500);
+  h1xybkg   = TH2F("h1xybkg",   "", 500,  0,  500, 500, 0, 500);
+  h1orientx = TH1F("h1orientx", "", 60,   -5, 5)
+  h1orienty = TH1F("h1orienty", "", 60,   -5, 5)
+  h1orientz = TH1F("h1orientz", "", 60,   -5, 5)
+  h1clulen  = TH1F("h1clulen",  "", 100,   0, 100)
+
+  # Set t0 for all runs
+  starttime = 1415577738.16
+  time[:] = [t - starttime for t in time]
 
   for i in range(0, len(time)):
-    h0t  .Fill(time[i] - min(time))
+    h0t  .Fill(time[i])
     h0val.Fill(val[i])
     h0x  .Fill(x[i])
     h0y  .Fill(y[i])
     h0xy .Fill(x[i], y[i])
 
-  x, y, val, time = remove_hot_pix(x, y, val, time, 0.5)
+  x, y, val, time = remove_hot_pix(x, y, val, time, args.hotpix)
   
   for i in range(0, len(time)):
-    h1t  .Fill(time[i] - min(time))
+    h1t  .Fill(time[i])
     h1val.Fill(val[i])
     h1x  .Fill(x[i])
     h1y  .Fill(y[i])
     h1xy .Fill(x[i], y[i])
-    h1orientx.Fill(orientx[i])
-    h1orienty.Fill(orienty[i])
-    h1orientz.Fill(orientz[i])
+    #h1orientx.Fill(orientx[i])
+    #h1orienty.Fill(orienty[i])
+    #h1orientz.Fill(orientz[i])
 
-  print 'Hit rate over entire run: ', rate(time), 'frames/s'
+  #print 'Start time:               ', min(time), 's'
+  print 'Hit rate over entire run: ', rate(time, 0, 500E3), 'frames/s'
+  print 'Hit frames during beam:   ', count_hits(time, 150E3, 200E3), 'frames'
+  print 'Hit rate during beam:     ', rate(time, 150E3, 200E3), 'frames/s'
 
-  # reorganize x,y,val,time into array of arrays by time stamp
-  xarr, yarr, valarr = sort_arrs_by_time(x, y, val, time)
+  # reorganize x,y,val,time into array of arrays by time stamp = frames
+  xarr, yarr, valarr, tarr = sort_arrs_by_time(x, y, val, time)
 
   # loop through arrs and classify as above or below hit thresh
   #lowx, lowy, lowval, highx, highy, highval = sort_arrs_by_thresh(xarr, yarr, valarr, 15)
 
   # process clusters
-  totclucnt, clulengths = process_clusters(xarr, yarr, valarr)
-
+  totxclu, totyclu, totvalclu, totclucnt, clulengths, trackt = process_clusters(xarr, yarr, valarr, tarr)
+  
+  #print min(time), ' to ', max(time)
   for i in range(0, len(clulengths)):
     if clulengths[i] > 0:
       h1clulen.Fill(clulengths[i])
-  
-  g = TFile("results/histos.root", "recreate")
+  for i in range(0, len(trackt)): 
+    #print trackt[i]
+    h1trackt.Fill(trackt[i])
+   
+  #print len(totxclu)
+  for i in range(0, len(totxclu)):
+    for j in range(0, len(totxclu[i])):
+      h1xybkg.Fill(totxclu[i][j][0], totyclu[i][j][0])
+      h1valclu.Fill(totvalclu[i][j][0])
+
+  h1xyclu = h1xy.Clone("h1xyclu")
+  h1xyclu.Add(h1xybkg, -1)
+
+  g = TFile("../results/histos.root", "update")
   h0t  .Write()
   h0val.Write()
   h0x  .Write()
@@ -387,11 +435,15 @@ if __name__ == "__main__":
   h0xy .Write()
   h1t  .Write()
   h1val.Write()
+  h1valclu.Write()
   h1x  .Write()
   h1y  .Write()
   h1xy .Write()
+  h1xyclu.Write()
+  h1xybkg.Write()
   h1orientx.Write()
   h1orienty.Write()
   h1orientz.Write()
   h1clulen.Write()
+  h1trackt.Write()
   g.Close()

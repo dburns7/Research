@@ -6,10 +6,11 @@ enum {MYORANGE1   = kOrange-4};
 enum {MYORANGE2   = kOrange-3};
 enum {MYMAGENTA1  = kMagenta};
 enum {MYMAGENTA2  = kMagenta+2};
-enum {MYBLUE1    = kBlue};
-enum {MYBLUE2    = kBlue-2};
-enum {MYRED1     = kRed};
-enum {MYRED2     = kRed-2};
+enum {MYBLUE1     = kBlue};
+enum {MYBLUE2     = kBlue-2};
+enum {MYRED1      = kRed};
+enum {MYRED2      = kRed-2};
+enum {MYBLACK     = kBlack};
 
 enum {FILL0 = 1001, FILL1 = 3004, FILL2 = 3013, FILL3 = 3005, FILL4=3014, FILL5 = 3007}; 
 enum {FILLSIG1 = 3002, FILLSIG2 = 3003};
@@ -17,87 +18,107 @@ enum {FILLSIG1 = 3002, FILLSIG2 = 3003};
 enum {LSOLID=1, LDASHED=2};
 
 
-TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, const char * sample, const char * legsamp, int style, int color, int & n){
+TH1F * GetHist(TFile *f, const char * name, const char * tag, const char * xtitle, int color, int lstyle, TLegend * leg, const char * legtag){
    char full_name[200];
-   sprintf(full_name, "%s_%s", name, sample);
+
+   sprintf(full_name, "%s;%s", name, tag);
    TH1F * h = (TH1F *) f->Get(full_name);
-   if (h){
-      h->SetFillStyle(style);
-      h->SetLineColor(color);
-      h->SetFillColor(color);
-      n += 1;
-      if (leg) { leg->AddEntry(h, legsamp, "f"); }
-      //if (leg && (n==1 || n==9)) { leg->AddEntry(h, legsamp, "f"); }
-      stack->Add(h);
-   }
-   return h;
-}
-
-THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, int & n, int mode=0){
-   char full_name[200];
-   
-   if (leg) {
-      leg->SetFillStyle(0);
-      leg->SetBorderSize(0);
-      leg->SetTextSize(0.04);
-   }
-
-   sprintf(full_name, "stack_%s", name);
-   THStack * stack = new THStack(full_name, "");
-
-   TH1F * h_base = (TH1F *) f->Get(name);
-   h_base->SetXTitle(xtitle);
-   stack->SetHistogram(h_base);
-   if (mode == 0)
-   {
-      AddHist(stack, leg, f, name, "ggZZ2l2l", "ggZZ2l2l", FILL0, MYORANGE2,  n);
-      AddHist(stack, leg, f, name, "4e",       "4e", FILL0, MYGREEN2,   n);
-      AddHist(stack, leg, f, name, "4mu",      "4mu", FILL0, MYORANGE1,  n);
-      AddHist(stack, leg, f, name, "4tau",     "4tau", FILL0, MYMAGENTA1, n);
-      AddHist(stack, leg, f, name, "ggZZ4l",   "ggZZ4l", FILL0, MYMAGENTA2, n);
-      AddHist(stack, leg, f, name, "2e2mu",    "2e2mu", FILL0, MYCYAN1,    n);
-      AddHist(stack, leg, f, name, "2e2tau",   "2e2tau", FILL0, MYGREEN1,   n);
-      AddHist(stack, leg, f, name, "2mu2tau",  "2mu2tau", FILL0, MYCYAN2,    n);
-   }
-   return stack;
-}
-
-TH1F * GetSigHist(TFile *f, const char * name, const char * tag, const char * xtitle, int color, int lstyle, TLegend * leg, const char * legtag){
-   char full_name[200];
-
-   sprintf(full_name, "%s_%s", name, tag);
-   TH1F * h = (TH1F *) f->Get(full_name);
-
    if(h){
      h->SetFillStyle(0);
      h->SetFillColor(color);
      h->SetLineColor(color);   
      h->SetLineStyle(lstyle);   
      h->SetXTitle(xtitle);
-     if (leg) { leg->AddEntry(h, legtag, "l"); }  
+     if(leg){
+       leg->AddEntry(h, legtag, "l");
+       leg->SetFillStyle(0);
+       leg->SetBorderSize(0);
+       leg->SetTextSize(0.04);
+     }
    }
-
    return h;
 }
 
 void mkplots(){
    gStyle->SetOptStat(0);
 
-   TFile * f = new TFile("latest.root");
+   TFile * f = new TFile("../results/histos.root");
+   //1: 08f89 SPS_S32
+   //2: 23587 SPS_HTC
+   //3: 6b24c SPS_S34
+   //4: 6d7bc SPS_HTC3D
+   //5: 95ea0 SPS_S33
+   //6: 960d6 SPS_S31
    
    TCanvas * c1 = new TCanvas("c1", "");
-   TLegend * leg1 = new TLegend(0.15, 0.56, 0.35, 0.85);
+   TLegend * leg1 = new TLegend(0.65, 0.65, 0.85, 0.85);
    c1->SetLogy();
    c1->cd();
-   int n = 0;
-   THStack * hmet_mc   = GetBkgStack(f, "histPFMET", "Missing Transverse Energy [GeV]", leg1, n);
-   TH1F    * hmet_data = GetSigHist(f, "histPFMET", "data", "Missing Transverse Energy [GeV]", MYRED1, LSOLID, leg1, "Data");
-   hmet_data->Draw("EP");
-   hmet_mc->Draw("HSAME");
-   hmet_data->Draw("EPSAME");
+   TH1F    * h1t1 = GetHist(f, "h1t", "1", "Time [s]", MYBLACK, LSOLID, leg1, "SPS_S32");
+   TH1F    * h1trackt1 = GetHist(f, "h1trackt", "1", "Time [s]", MYRED1, LSOLID, leg1, "SPS_S32 Tracks");
+   h1t1->Draw();
+   h1trackt1->Draw("HSAME");
    leg1->Draw();
-   c1->SaveAs("met.png");
+   c1->SaveAs("plots/h1t1.png");
 
+   TCanvas * c2 = new TCanvas("c2", "");
+   TLegend * leg2 = new TLegend(0.65, 0.65, 0.85, 0.85);
+   c2->SetLogy();
+   c2->cd();
+   TH1F    * h1t2 = GetHist(f, "h1t", "2", "Time [s]", MYBLACK, LSOLID, leg2, "SPS_HTC");
+   TH1F    * h1trackt2 = GetHist(f, "h1trackt", "2", "Time [s]", MYRED1, LSOLID, leg2, "SPS_HTC Tracks");
+   h1t2->Draw();
+   h1trackt2->Draw("HSAME");
+   leg2->Draw();
+   c2->SaveAs("plots/h1t2.png");
+ 
+   TCanvas * c3 = new TCanvas("c3", "");
+   TLegend * leg3 = new TLegend(0.65, 0.65, 0.85, 0.85);
+   c3->SetLogy();
+   c3->cd();
+   TH1F    * h1t3 = GetHist(f, "h1t", "3", "Time [s]", MYBLACK, LSOLID, leg3, "SPS_S34");
+   TH1F    * h1trackt3 = GetHist(f, "h1trackt", "3", "Time [s]", MYRED1, LSOLID, leg3, "SPS_S34 Tracks");
+   h1t3->Draw();
+   h1trackt3->Draw("HSAME");
+   leg3->Draw();
+   c3->SaveAs("plots/h1t3.png");
+   
+   TCanvas * c4 = new TCanvas("c4", "");
+   TLegend * leg4 = new TLegend(0.65, 0.65, 0.85, 0.85);
+   c4->SetLogy();
+   c4->cd();
+   TH1F    * h1t4 = GetHist(f, "h1t", "4", "Time [s]", MYBLACK, LSOLID, leg4, "SPS_HTC3D");
+   TH1F    * h1trackt4 = GetHist(f, "h1trackt", "4", "Time [s]", MYRED1, LSOLID, leg4, "SPS_HTC3D Tracks");
+   h1t4->Draw();
+   h1trackt4->Draw("HSAME");
+   leg4->Draw();
+   c4->SaveAs("plots/h1t4.png");
+   
+   TCanvas * c5 = new TCanvas("c5", "");
+   TLegend * leg5 = new TLegend(0.65, 0.65, 0.85, 0.85);
+   c5->SetLogy();
+   c5->cd();
+   TH1F    * h1t5 = GetHist(f, "h1t", "5", "Time [s]", MYBLACK, LSOLID, leg5, "SPS_S33");
+   TH1F    * h1trackt5 = GetHist(f, "h1trackt", "5", "Time [s]", MYRED1, LSOLID, leg5, "SPS_S33 Tracks");
+   h1t5->Draw();
+   h1trackt5->Draw("HSAME");
+   leg5->Draw();
+   c5->SaveAs("plots/h1t5.png");
+   
+   TCanvas * c6 = new TCanvas("c6", "");
+   TLegend * leg6 = new TLegend(0.65, 0.65, 0.85, 0.85);
+   c6->SetLogy();
+   c6->cd();
+   TH1F    * h1t6 = GetHist(f, "h1t", "6", "Time [s]", MYBLACK, LSOLID, leg6, "SPS_S31");
+   TH1F    * h1trackt6 = GetHist(f, "h1trackt", "6", "Time [s]", MYRED1, LSOLID, leg6, "SPS_S31 Tracks");
+   h1t6->Draw();
+   h1trackt6->Draw("HSAME");
+   leg6->Draw();
+   c6->SaveAs("plots/h1t6.png");
+ 
+
+
+   /*
    TCanvas * c2 = new TCanvas("c2", "");
    TLegend * leg2 = new TLegend(0.7, 0.56, 0.9, 0.85);
    c2->SetLogy();
@@ -151,18 +172,7 @@ void mkplots(){
    leg5->Draw();
    c5->SaveAs("mz2.png");
 
-
-
-
-
-
-
-
-
-
-
-/*
-   return;
+   
    TCanvas * c2 = new TCanvas("c2", "");
    TLegend * leg2 = new TLegend(0.6, 0.65, 0.80, 0.90);
    c2->SetLogy();
@@ -175,6 +185,8 @@ void mkplots(){
    hmet_sig1->Draw("HSAME");
    leg2->Draw();
    c2->SaveAs("met_postcuts.png");
+
+
    TCanvas * c5 = new TCanvas("c5", "");
    TLegend * leg5 = new TLegend(0.6, 0.65, 0.80, 0.90);
    leg5->SetFillStyle(0);
@@ -213,6 +225,7 @@ void mkplots(){
    h0mllll_wh_zh_tth_hww->Draw("HSAME");
    leg5->Draw();
    c5->SaveAs("plots/mllll.png");
+
    TCanvas * c6 = new TCanvas("c6", "");
    TLegend * leg6 = new TLegend(0.6, 0.65, 0.80, 0.90);
    leg6->SetFillStyle(0);
@@ -246,6 +259,7 @@ void mkplots(){
    h0met_nopu_wh_zh_tth_hww->Draw("HSAME");
    leg6->Draw();
    c6->SaveAs("plots/met_unitnorm.png");
+
 */
 
 }
