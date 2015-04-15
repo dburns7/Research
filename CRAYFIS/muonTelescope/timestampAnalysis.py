@@ -5,6 +5,7 @@ import numpy as np
 import math
 import sys
 import argparse
+import scipy.io
 
 def dist(x1, x2, y1, y2):
   return math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
@@ -339,7 +340,34 @@ def get_data(tree):
   return (time, val, x, y, avg3, avg5, orientx, orienty, orientz)
 
 if __name__ == "__main__":
- 
+
+  mat1 = scipy.io.loadmat('data/C_10min/C_10min_600.mat')
+  mat2 = scipy.io.loadmat('file100.mat')
+  print mat1
+  V1 = mat1['A']
+  V2 = mat2['A']
+  L1 = mat1['Length']
+  L2 = mat2['Length']
+  Tint1 = mat1['Tinterval']
+  Tint2 = mat2['Tinterval']
+  Tstart1 = mat1['Tstart']
+  Tstart2 = mat2['Tstart']
+  T1 = np.arange(Tstart1, Tstart1+(L1-1)*Tint1, Tint1)
+  print T1
+  #print Tint1
+  #print Tstart1
+  #print Tstart2
+  
+  '''
+ {'A': array([[ 0.74683195],
+       [ 0.74686271],
+       [ 0.74670893],
+       ..., 
+       [ 0.74661666],
+       [ 0.74670893],
+       [ 0.74646282]], dtype=float32), 'Length': array([[78129]], dtype=int32), 'Tinterval': array([[  1.28000002e-08]]), 'Tstart': array([[ 0.]])}
+  '''
+  '''
   parser = argparse.ArgumentParser(description="Analyze single phone run")
   parser.add_argument('--dev', required=True, help='the device ID')
   parser.add_argument('--runfile', required=True, help='the root file for the run')
@@ -403,6 +431,8 @@ if __name__ == "__main__":
   print 'Time of entire run:       ', max(time), 's'
   print 'Hit rate over entire run: ', rate(time, 0, max(time)), 'frames/s'
   '''
+  
+  '''
   print 'Hit frames during beam:   ', count_hits(time, 150E3, 200E3), 'frames'
   print 'Hit rate during beam:     ', rate(time, 150E3, 200E3), 'frames/s'
 
@@ -432,6 +462,7 @@ if __name__ == "__main__":
   h1xyclu = h1xy.Clone("h1xyclu")
   h1xyclu.Add(h1xybkg, -1)
   '''
+  '''
   g = TFile("../results/histos.root", "update")
   h0t  .Write()
   h0val.Write()
@@ -452,3 +483,4 @@ if __name__ == "__main__":
   h1clulen.Write()
   h1trackt.Write()
   g.Close()
+  '''

@@ -12,7 +12,7 @@ enum {MYBLUE2    = kBlue-2};
 enum {MYRED1     = kRed};
 enum {MYRED2     = kRed-2};
 
-enum {FILL0 = 1001, FILL1 = 3004, FILL2 = 3013, FILL3 = 3005, FILL4=3014, FILL4 = 3007}; 
+enum {FILL0 = 1001, FILL1 = 3004, FILL2 = 3013, FILL3 = 3005, FILL4=3014, FILL5 = 3007}; 
 enum {FILLSIG1 = 3002, FILLSIG2 = 3003};
 
 enum {LSOLID=1, LDASHED=2};
@@ -21,7 +21,7 @@ enum {LSOLID=1, LDASHED=2};
 TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, const char * sample, const char * legsamp, int style, int color){
    char full_name[200];
    sprintf(full_name, "%s_%s", name, sample);
-   TH1F * h = f->Get(full_name);
+   TH1F * h = (TH1F *)f->Get(full_name);
    if (h){
       h->SetFillStyle(style);
       h->SetLineColor(color);
@@ -32,7 +32,7 @@ TH1F * AddHist(THStack *stack, TLegend * leg,  TFile *f, const char * name, cons
    return h;
 }
 
-THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, int mode==0){
+THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend * leg, int mode=0){
    char full_name[200];
 
    if (leg) {
@@ -44,7 +44,7 @@ THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend 
    sprintf(full_name, "stack_%s", name);
    THStack * stack = new THStack(full_name, "");
 
-   TH1F * h_base = f->Get(name);
+   TH1F * h_base = (TH1F *)f->Get(name);
    h_base->SetXTitle(xtitle);
    stack->SetHistogram(h_base);
 
@@ -63,7 +63,7 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, int color, int 
    char full_name[200];
 
    sprintf(full_name, "%s_%s", name, tag);
-   TH1F * h = f->Get(full_name);
+   TH1F * h = (TH1F*) f->Get(full_name);
 
    if (leg) {
       leg->SetFillStyle(0);
@@ -80,7 +80,7 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, int color, int 
    return h;
 }
 
-mkplots(){
+int mkplots(){
    gStyle->SetOptStat(0);
 
    double basemin = 0.001;
@@ -109,17 +109,17 @@ mkplots(){
    TLegend * leg2 = new TLegend(0.65, 0.65, 0.80, 0.85);
    c2->SetLogy();
    c2->cd();
-   THStack * hmet_bkg = GetBkgStack(f, "h1met_nopu", "Missing Transverse Energy [GeV]", leg2);
-   TH1F    * hmet_sig1 = GetSigHist(f, "h1met_nopu", "hxx_1GeV", MYRED1, LSOLID, leg2, "HXX (100 GeV)");
-   hmet_sig1->Scale(1E4);
-   hmet_sig1->SetLineWidth(2);
-   hmet_sig1->Draw();
-   hmet_bkg->Draw("HSAME");
-   hmet_sig1->Draw("HSAME");
+   THStack * hmet_bkg2 = GetBkgStack(f, "h1met_nopu", "Missing Transverse Energy [GeV]", leg2);
+   TH1F    * hmet_sig12 = GetSigHist(f, "h1met_nopu", "hxx_100GeV", MYRED1, LSOLID, leg2, "HXX (100 GeV)");
+   hmet_sig12->Scale(1E4);
+   hmet_sig12->SetLineWidth(2);
+   hmet_sig12->Draw();
+   hmet_bkg2->Draw("HSAME");
+   hmet_sig12->Draw("HSAME");
    leg2->Draw();
-   hmet_sig1->SetAxisRange(1E1, 1E6,"Y");
-   hmet_sig1->SetAxisRange(200., 499.,"X");
-   hmet_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
+   hmet_sig12->SetAxisRange(1E1, 5E6,"Y");
+   hmet_sig12->SetAxisRange(200., 999.,"X");
+   hmet_sig12->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    //hmet_sig1->GetXaxis()->SetTitleSize(0.5);
    //hmet_bkg->GetXaxis()->SetRange(75., 250.);
    //hmet_bkg->GetYaxis()->SetRange(1E-4, 150.);
@@ -158,7 +158,7 @@ mkplots(){
    hmgg_bkg5->Draw("HSAME");
    hmgg_sig1->Draw("HSAME");
    leg3->Draw();
-   hmgg_sig1->SetAxisRange(0, 0.65,"Y");
+   hmgg_sig1->SetAxisRange(0, 0.55,"Y");
    //hmgg_sig1->SetAxisRange(100., 150.,"X");
    hmgg_sig1->GetXaxis()->SetTitle("Diphoton Invariant Mass [GeV]");
    hmgg_sig1->GetYaxis()->SetTitle("Fraction of Events");
@@ -175,7 +175,7 @@ mkplots(){
    TLegend * leg4 = new TLegend(0.65, 0.65, 0.80, 0.85);
    //c3->SetLogy();
    c4->cd();
-   TH1F    * h0met_sig1 = GetSigHist(f, "h0met_nopu", "hxx_1GeV", MYRED1, LSOLID, leg4, "HXX (100 GeV)");
+   TH1F    * h0met_sig1 = GetSigHist(f, "h0met_nopu", "hxx_100GeV", MYRED1, LSOLID, leg4, "HXX (100 GeV)");
    TH1F    * h0met1 = GetSigHist(f, "h0met_nopu", "ZH",  MYCYAN1,  LSOLID, leg4, "HZ");
    TH1F    * h0met2 = GetSigHist(f, "h0met_nopu", "WH",  MYGREEN1, LSOLID, leg4, "HW");
    TH1F    * h0met3 = GetSigHist(f, "h0met_nopu", "H",   MYBLUE1,  LSOLID, leg4, "H");
@@ -203,7 +203,7 @@ mkplots(){
    h0met5     ->Draw("HSAME");
    h0met_sig1 ->Draw("HSAME");
    leg4       ->Draw();
-   h0met_sig1 ->SetAxisRange(0, 0.07,"Y");
+   h0met_sig1 ->SetAxisRange(0, 0.12,"Y");
    //h0met_sig1->SetAxisRange(100., 150.,"X");
    h0met_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    h0met_sig1->GetYaxis()->SetTitle("Fraction of Events");
@@ -212,7 +212,7 @@ mkplots(){
    l3->Draw();
    c4->SaveAs("met_unitnorm.png");
    
-   return;
+   /*
    TCanvas * c6 = new TCanvas("c6", "");
    TLegend * leg6 = new TLegend(0.6, 0.65, 0.80, 0.90);
    leg6->SetFillStyle(0);
@@ -254,6 +254,6 @@ mkplots(){
    //l3->SetLineWidth(3);
    //l3->Draw();
    c6->SaveAs("met_signals.png");
-
-
+*/
+   return 0;
 }

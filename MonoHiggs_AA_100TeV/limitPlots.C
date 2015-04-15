@@ -1,47 +1,57 @@
 void limitPlots(){
 
 /*
-Expected  2.5%: r < 3.5335
-Expected 16.0%: r < 4.6928
-Expected 50.0%: r < 6.5312
-Expected 84.0%: r < 9.0565
-Expected 97.5%: r < 12.0530
+Expected  2.5%: r < 5.0551
+Expected 16.0%: r < 6.7639
+Expected 50.0%: r < 9.3438
+Expected 84.0%: r < 13.0310
+Expected 97.5%: r < 17.2971
 
-Expected  2.5%: r < 3.5123
-Expected 16.0%: r < 4.6903
-Expected 50.0%: r < 6.4688
-Expected 84.0%: r < 9.0214
-Expected 97.5%: r < 11.9749
+Expected  2.5%: r < 5.7314
+Expected 16.0%: r < 7.6687
+Expected 50.0%: r < 10.5938
+Expected 84.0%: r < 14.7742
+Expected 97.5%: r < 19.6111
 
-Expected  2.5%: r < 0.6403
-Expected 16.0%: r < 0.8526
-Expected 50.0%: r < 1.1836
-Expected 84.0%: r < 1.6412
-Expected 97.5%: r < 2.1842
+Expected  2.5%: r < 1.5301
+Expected 16.0%: r < 2.0473
+Expected 50.0%: r < 2.8281
+Expected 84.0%: r < 3.9216
+Expected 97.5%: r < 5.2191
 
-Expected  2.5%: r < 0.5347
-Expected 16.0%: r < 0.7154
-Expected 50.0%: r < 0.9883
-Expected 84.0%: r < 1.3704
-Expected 97.5%: r < 1.8238
+Expected  2.5%: r < 1.7329
+Expected 16.0%: r < 2.3187
+Expected 50.0%: r < 3.2031
+Expected 84.0%: r < 4.4671
+Expected 97.5%: r < 5.9296
 
-Expected  2.5%: r < 0.5368
-Expected 16.0%: r < 0.7182
-Expected 50.0%: r < 0.9922
-Expected 84.0%: r < 1.3758
-Expected 97.5%: r < 1.8310
+Expected  2.5%: r < 2.0880
+Expected 16.0%: r < 2.7938
+Expected 50.0%: r < 3.8594
+Expected 84.0%: r < 5.3516
+Expected 97.5%: r < 7.1222
 
+59 52 195 172 143
 */
 
 static const Int_t n = 5;
 Double_t _mchi[n]  = {1, 10, 100, 500, 1000};
 
-Double_t _2siglow[n]  = {3.534, 3.512, 0.6403, 0.5347, 0.5368};
+Double_t _2siglow[n]  = {5.055, 5.731, 1.530, 1.733, 2.088};
+Double_t _1siglow[n]  = {6.764, 7.669, 2.047, 2.319, 2.794};
+Double_t _middle[n]   = {9.344, 10.59, 2.828, 3.203, 3.859};
+Double_t _1sighigh[n] = {13.03, 14.77, 3.922, 4.467, 5.352};
+Double_t _2sighigh[n] = {17.30, 19.61, 5.219, 5.930, 7.122};
+Double_t _seleff[n]   = {0.01966, 0.01733, 0.065, 0.05733, 0.04766};
+
+//smeared MC
+/*Double_t _2siglow[n]  = {3.534, 3.512, 0.6403, 0.5347, 0.5368};
 Double_t _1siglow[n]  = {4.693, 4.690, 0.8526, 0.7154, 0.7182};
 Double_t _middle[n]   = {6.531, 6.469, 1.184, 0.9883, 0.9922};
 Double_t _1sighigh[n] = {9.057, 9.021, 1.641, 1.370, 1.376};
 Double_t _2sighigh[n] = {12.05, 11.97, 2.184, 1.824, 1.831};
 Double_t _seleff[n]   = {212.22E-5, 213.6E-5, 1170.6E-5, 1400.64E-5, 1393.83E-5}
+*/
 
 TGraph *g2siglow  = new TGraph(n, _mchi, _2siglow);
 TGraph *g1siglow  = new TGraph(n, _mchi, _1siglow);
@@ -113,7 +123,7 @@ pt->Draw();
 ce->SaveAs("sigma_limits.png");
 
 TCanvas * c2 = new TCanvas("c2", "");
-TH2F * hframe2 = new TH2F("hframe2", "", 10, 0.9, 1.1E3, 10, 0.0, 5E-2);
+TH2F * hframe2 = new TH2F("hframe2", "", 10, 0.9, 1.1E3, 10, 0.0, 1E-1);
 hframe2->GetXaxis()->SetTitle("m_{#chi} [GeV]");
 hframe2->GetXaxis()->SetTitleOffset(1.3);
 hframe2->GetYaxis()->SetTitle("Selection Efficiency");

@@ -61,10 +61,10 @@ THStack * GetBkgStack(TFile *f, const char * name, const char * xtitle, TLegend 
       AddHist(stack, leg, f, name, "wh_zh_tth_hzz", "HW HW Htt, H > ZZ", FILL0, MYCYAN1);   
       AddHist(stack, leg, f, name, "wh_zh_tth_hww", "HW HZ Htt, H > WW", FILL0, MYMAGENTA1);
 */
-      AddHist(stack, leg, f, name, "h_zz_4l",       "H > ZZ > 4L",       FILL0, MYGREEN2);
-      AddHist(stack, leg, f, name, "wh_zh_tth_hzz", "HW HW Htt, H > ZZ", FILL0, MYCYAN1);   
-      AddHist(stack, leg, f, name, "zz_4l",         "ZZ > 4L",           FILL0, MYBLUE2);
-      AddHist(stack, leg, f, name, "wh_zh_tth_hww", "HW HZ Htt, H > WW", FILL0, MYMAGENTA1);
+      AddHist(stack, leg, f, name, "zh_hzz",  "HZ, H > ZZ",  FILL0, MYCYAN1);   
+      AddHist(stack, leg, f, name, "zh_hww",  "HZ, H > WW",  FILL0, MYMAGENTA1);
+      AddHist(stack, leg, f, name, "h_zz_4l", "H > ZZ > 4L", FILL0, MYGREEN2);
+      AddHist(stack, leg, f, name, "zz_4l",   "ZZ > 4L",     FILL0, MYBLUE2);
    }
    return stack;
 }
@@ -84,28 +84,28 @@ TH1F * GetSigHist(TFile *f, const char * name, const char * tag, int color, int 
    return h;
 }
 
-mkplots(){
+int mkplots_13tev(){
+   
    gStyle->SetOptStat(0);
 
    double basemin = 0.001;
 
-   TFile * f = new TFile("latest_Full_Combo.root");
-   f->ls();
-   
+   TFile * f = new TFile("latest_13tev.root");
+   //f->ls();
    
    TCanvas * c1 = new TCanvas("c1", "");
    TLegend * leg1 = new TLegend(0.6, 0.65, 0.80, 0.90);
    c1->SetLogy();
    c1->cd();
    THStack * hmet_bkg = GetBkgStack(f, "h0met_nopu", "Missing Transverse Energy [GeV]", leg1);
-   TH1F    * hmet_sig1 = GetSigHist(f, "h0met_nopu", "hxx_100GeV", MYRED1, LSOLID, leg1, "HXX (100 GeV)");
-   hmet_sig1->Scale(100);
+   TH1F    * hmet_sig1 = GetSigHist(f, "h0met_nopu", "hxx_1GeV", MYRED1, LSOLID, leg1, "HXX (1 GeV, 1 fb)");
+   //hmet_sig1->Scale(100);
    hmet_sig1->SetLineWidth(2);
    hmet_sig1->Draw("HSAME");
    hmet_bkg->Draw("HSAME");
    hmet_sig1->Draw("HSAME");
    leg1->Draw();
-   hmet_sig1->SetAxisRange(1E-4, 100, "Y");
+   hmet_sig1->SetAxisRange(1E-4, 5E2, "Y");
    hmet_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    c1->SaveAs("met_precuts.png");
 
@@ -119,17 +119,17 @@ mkplots(){
    hframe->GetYaxis()->SetTitle("Fractional Energy Resolution");
    hframe->GetYaxis()->SetTitleOffset(1.2);
    hframe->Draw();*/
-   THStack * hmet_bkg = GetBkgStack(f, "h1met_nopu", "Missing Transverse Energy [GeV]", leg2);
-   TH1F    * hmet_sig1 = GetSigHist(f, "h1met_nopu", "hxx_100GeV", MYRED1, LSOLID, leg2, "HXX (100 GeV)");
-   hmet_sig1->Scale(100);
-   hmet_sig1->SetLineWidth(2);
-   hmet_sig1->Draw();
-   hmet_bkg->Draw("HSAME");
-   hmet_sig1->Draw("HSAME");
+   THStack * hmet_bkg2 = GetBkgStack(f, "h1met_nopu", "Missing Transverse Energy [GeV]", leg2);
+   TH1F    * hmet_sig12 = GetSigHist(f, "h1met_nopu", "hxx_1GeV", MYRED1, LSOLID, leg2, "HXX (1 GeV, 1 fb)");
+   //hmet_sig12->Scale(100);
+   hmet_sig12->SetLineWidth(2);
+   hmet_sig12->Draw();
+   hmet_bkg2->Draw("HSAME");
+   hmet_sig12->Draw("HSAME");
    leg2->Draw();
-   hmet_sig1->SetAxisRange(1E-4, 150.,"Y");
-   hmet_sig1->SetAxisRange(75., 250.,"X");
-   hmet_sig1->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
+   hmet_sig12->SetAxisRange(1E-4, 150.,"Y");
+   hmet_sig12->SetAxisRange(125., 250.,"X");
+   hmet_sig12->GetXaxis()->SetTitle("Missing Transverse Energy [GeV]");
    //hmet_sig1->GetXaxis()->SetTitleSize(0.5);
    //hmet_bkg->GetXaxis()->SetRange(75., 250.);
    //hmet_bkg->GetYaxis()->SetRange(1E-4, 150.);
@@ -141,11 +141,11 @@ mkplots(){
    leg3->SetBorderSize(0);
    leg3->SetTextSize(0.04);
    c3->cd();
-   TH1F    * h0mll_l_hxx_1GeV       = GetSigHist(f, "h0mll_l", "hxx_100GeV",       MYRED1,     LSOLID, leg3, "HXX (100 GeV)");
+   TH1F    * h0mll_l_hxx_1GeV       = GetSigHist(f, "h0mll_l", "hxx_1GeV",       MYRED1,     LSOLID, leg3, "HXX (1 GeV, 1 fb)");
    TH1F    * h0mll_l_h_zz_4l        = GetSigHist(f, "h0mll_l", "h_zz_4l",        MYGREEN2,   LSOLID, leg3, "H > ZZ > 4L");
-   TH1F    * h0mll_l_wh_zh_tth_hzz  = GetSigHist(f, "h0mll_l", "wh_zh_tth_hzz",  MYCYAN1,    LSOLID, leg3, "HW HW Htt, H > ZZ");
+   TH1F    * h0mll_l_wh_zh_tth_hzz  = GetSigHist(f, "h0mll_l", "zh_hzz",  MYCYAN1,    LSOLID, leg3, "HZ, H > ZZ");
    TH1F    * h0mll_l_zz_4l          = GetSigHist(f, "h0mll_l", "zz_4l",          MYBLUE2,    LSOLID, leg3, "ZZ > 4L");
-   TH1F    * h0mll_l_wh_zh_tth_hww  = GetSigHist(f, "h0mll_l", "wh_zh_tth_hww",  MYMAGENTA1, LSOLID, leg3, "HW HW Htt, H > WW");
+   TH1F    * h0mll_l_wh_zh_tth_hww  = GetSigHist(f, "h0mll_l", "zh_hww",  MYMAGENTA1, LSOLID, leg3, "HZ, H > WW");
    h0mll_l_hxx_1GeV->Scale(1/h0mll_l_hxx_1GeV->Integral());
    h0mll_l_h_zz_4l->Scale(1/h0mll_l_h_zz_4l->Integral());
    h0mll_l_wh_zh_tth_hzz->Scale(1/h0mll_l_wh_zh_tth_hzz->Integral());
@@ -166,6 +166,11 @@ mkplots(){
    h0mll_l_wh_zh_tth_hzz->SetAxisRange(0., 110.,"X");
    h0mll_l_zz_4l->SetAxisRange(0., 110.,"X");
    h0mll_l_wh_zh_tth_hww->SetAxisRange(0., 110.,"X");
+   h0mll_l_hxx_1GeV->SetAxisRange(0., 0.25,"Y");
+   h0mll_l_h_zz_4l->SetAxisRange(0., 0.25,"Y");
+   h0mll_l_wh_zh_tth_hzz->SetAxisRange(0., 0.25,"Y");
+   h0mll_l_zz_4l->SetAxisRange(0., 0.25,"Y");
+   h0mll_l_wh_zh_tth_hww->SetAxisRange(0., 0.25,"Y");
    /*h0mll_l_hxx_1GeV->
    h0mll_l_h_zz_4l->
    h0mll_l_wh_zh_tth_hzz->
@@ -183,6 +188,7 @@ mkplots(){
    h0mll_l_wh_zh_tth_hzz->Draw("HSAME");
    h0mll_l_zz_4l->Draw("HSAME");
    h0mll_l_wh_zh_tth_hww->Draw("HSAME");
+   h0mll_l_hxx_1GeV->Draw("HSAME");
    leg3->Draw();
    TLine *l1 = new TLine(50, 0, 50, 0.1);
    //l1->SetLineColor(kRed);
@@ -199,11 +205,11 @@ mkplots(){
    leg4->SetBorderSize(0);
    leg4->SetTextSize(0.04);
    c4->cd();
-   TH1F    * h0mll_sl_hxx_1GeV       = GetSigHist(f, "h0mll_sl", "hxx_100GeV",       MYRED1,     LSOLID, leg4, "HXX (100 GeV)");
+   TH1F    * h0mll_sl_hxx_1GeV       = GetSigHist(f, "h0mll_sl", "hxx_1GeV",       MYRED1,     LSOLID, leg4, "HXX (1 GeV, 1 fb)");
    TH1F    * h0mll_sl_h_zz_4l        = GetSigHist(f, "h0mll_sl", "h_zz_4l",        MYGREEN2,   LSOLID, leg4, "H > ZZ > 4L");
-   TH1F    * h0mll_sl_wh_zh_tth_hzz  = GetSigHist(f, "h0mll_sl", "wh_zh_tth_hzz",  MYCYAN1,    LSOLID, leg4, "HW HW Htt, H > ZZ");
+   TH1F    * h0mll_sl_wh_zh_tth_hzz  = GetSigHist(f, "h0mll_sl", "zh_hzz",  MYCYAN1,    LSOLID, leg4, "HZ, H > ZZ");
    TH1F    * h0mll_sl_zz_4l          = GetSigHist(f, "h0mll_sl", "zz_4l",          MYBLUE2,    LSOLID, leg4, "ZZ > 4L");
-   TH1F    * h0mll_sl_wh_zh_tth_hww  = GetSigHist(f, "h0mll_sl", "wh_zh_tth_hww",  MYMAGENTA1, LSOLID, leg4, "HW HW Htt, H > WW");
+   TH1F    * h0mll_sl_wh_zh_tth_hww  = GetSigHist(f, "h0mll_sl", "zh_hww",  MYMAGENTA1, LSOLID, leg4, "HZ, H > WW");
    h0mll_sl_hxx_1GeV->Scale(1/h0mll_sl_hxx_1GeV->Integral());
    h0mll_sl_h_zz_4l->Scale(1/h0mll_sl_h_zz_4l->Integral());
    h0mll_sl_wh_zh_tth_hzz->Scale(1/h0mll_sl_wh_zh_tth_hzz->Integral());
@@ -219,6 +225,11 @@ mkplots(){
    h0mll_sl_wh_zh_tth_hzz->SetAxisRange(0., 110.,"X");
    h0mll_sl_zz_4l->SetAxisRange(0., 110.,"X");
    h0mll_sl_wh_zh_tth_hww->SetAxisRange(0., 110.,"X");
+   h0mll_sl_hxx_1GeV->SetAxisRange(0., 0.35,"Y");
+   h0mll_sl_h_zz_4l->SetAxisRange(0., 0.35,"Y");
+   h0mll_sl_wh_zh_tth_hzz->SetAxisRange(0., 0.35,"Y");
+   h0mll_sl_zz_4l->SetAxisRange(0., 0.35,"Y");
+   h0mll_sl_wh_zh_tth_hww->SetAxisRange(0., 0.35,"Y");
    h0mll_sl_hxx_1GeV->GetYaxis()->SetTitle("Fraction of Events");
    h0mll_sl_h_zz_4l->GetYaxis()->SetTitle("Fraction of Events");
    h0mll_sl_wh_zh_tth_hzz->GetYaxis()->SetTitle("Fraction of Events");
@@ -245,7 +256,7 @@ mkplots(){
    TLine *l3 = new TLine(12, 0, 12, 0.1);
    l3->SetLineWidth(3);
    l3->Draw();
-   TLine *l4 = new TLine(115, 0, 115, 0.1);
+   TLine *l4 = new TLine(110, 0, 110, 0.1);
    l4->SetLineWidth(3);
    l4->Draw();
    c4->SaveAs("mll_sl.png");
@@ -256,11 +267,11 @@ mkplots(){
    leg5->SetBorderSize(0);
    leg5->SetTextSize(0.04);
    c5->cd();
-   TH1F    * h0mllll_hxx_1GeV       = GetSigHist(f, "h0mllll", "hxx_100GeV",       MYRED1,     LSOLID, leg5, "HXX (100 GeV)");
+   TH1F    * h0mllll_hxx_1GeV       = GetSigHist(f, "h0mllll", "hxx_1GeV",       MYRED1,     LSOLID, leg5, "HXX (1 GeV, 1 fb)");
    TH1F    * h0mllll_h_zz_4l        = GetSigHist(f, "h0mllll", "h_zz_4l",        MYGREEN2,   LSOLID, leg5, "H > ZZ > 4L");
-   TH1F    * h0mllll_wh_zh_tth_hzz  = GetSigHist(f, "h0mllll", "wh_zh_tth_hzz",  MYCYAN1,    LSOLID, leg5, "HW HW Htt, H > ZZ");
+   TH1F    * h0mllll_wh_zh_tth_hzz  = GetSigHist(f, "h0mllll", "zh_hzz",  MYCYAN1,    LSOLID, leg5, "HZ, H > ZZ");
    TH1F    * h0mllll_zz_4l          = GetSigHist(f, "h0mllll", "zz_4l",          MYBLUE2,    LSOLID, leg5, "ZZ > 4L");
-   TH1F    * h0mllll_wh_zh_tth_hww  = GetSigHist(f, "h0mllll", "wh_zh_tth_hww",  MYMAGENTA1, LSOLID, leg5, "HW HW Htt, H > WW");
+   TH1F    * h0mllll_wh_zh_tth_hww  = GetSigHist(f, "h0mllll", "zh_hww",  MYMAGENTA1, LSOLID, leg5, "HZ, H > WW");
    h0mllll_hxx_1GeV->Scale(1/h0mllll_hxx_1GeV->Integral());
    h0mllll_h_zz_4l->Scale(1/h0mllll_h_zz_4l->Integral());
    h0mllll_wh_zh_tth_hzz->Scale(1/h0mllll_wh_zh_tth_hzz->Integral());
@@ -281,6 +292,11 @@ mkplots(){
    h0mllll_wh_zh_tth_hzz->SetAxisRange(80., 200.,"X");
    h0mllll_zz_4l->SetAxisRange(80., 200.,"X");
    h0mllll_wh_zh_tth_hww->SetAxisRange(80., 200.,"X");
+   h0mllll_hxx_1GeV->SetAxisRange(0., .25,"Y");
+   h0mllll_h_zz_4l->SetAxisRange(0., .25,"Y");
+   h0mllll_wh_zh_tth_hzz->SetAxisRange(0., .25,"Y");
+   h0mllll_zz_4l->SetAxisRange(0., .25,"Y");
+   h0mllll_wh_zh_tth_hww->SetAxisRange(80., .25,"Y");
    h0mllll_hxx_1GeV->SetLineWidth(2);
    h0mllll_h_zz_4l->SetLineWidth(2);
    h0mllll_wh_zh_tth_hzz->SetLineWidth(2);
@@ -293,13 +309,14 @@ mkplots(){
    h0mllll_wh_zh_tth_hzz->Draw("HSAME");
    h0mllll_zz_4l->Draw("HSAME");
    h0mllll_wh_zh_tth_hww->Draw("HSAME");
+   h0mllll_hxx_1GeV->Draw("HSAME");
    leg5->Draw();
-   TLine *l3 = new TLine(105, 0, 105, 0.25);
-   l3->SetLineWidth(3);
-   l3->Draw();
-   TLine *l4 = new TLine(145, 0, 145, 0.25);
-   l4->SetLineWidth(3);
-   l4->Draw();
+   TLine *l5 = new TLine(105, 0, 105, 0.15);
+   l5->SetLineWidth(3);
+   l5->Draw();
+   TLine *l6 = new TLine(145, 0, 145, 0.15);
+   l6->SetLineWidth(3);
+   l6->Draw();
    c5->SaveAs("mllll.png");
    
    
@@ -309,11 +326,11 @@ mkplots(){
    leg6->SetBorderSize(0);
    leg6->SetTextSize(0.04);
    c6->cd();
-   TH1F    * h0met_nopu_hxx_1GeV       = GetSigHist(f, "h0met_nopu", "hxx_100GeV",       MYRED1,     LSOLID, leg6, "HXX (100 GeV)");
+   TH1F    * h0met_nopu_hxx_1GeV       = GetSigHist(f, "h0met_nopu", "hxx_1GeV",       MYRED1,     LSOLID, leg6, "HXX (1 GeV, 1 fb)");
    TH1F    * h0met_nopu_h_zz_4l        = GetSigHist(f, "h0met_nopu", "h_zz_4l",        MYGREEN2,   LSOLID, leg6, "H > ZZ > 4L");
-   TH1F    * h0met_nopu_wh_zh_tth_hzz  = GetSigHist(f, "h0met_nopu", "wh_zh_tth_hzz",  MYCYAN1,    LSOLID, leg6, "HW HW Htt, H > ZZ");
+   TH1F    * h0met_nopu_wh_zh_tth_hzz  = GetSigHist(f, "h0met_nopu", "zh_hzz",  MYCYAN1,    LSOLID, leg6, "HZ, H > ZZ");
    TH1F    * h0met_nopu_zz_4l          = GetSigHist(f, "h0met_nopu", "zz_4l",          MYBLUE2,    LSOLID, leg6, "ZZ > 4L");
-   TH1F    * h0met_nopu_wh_zh_tth_hww  = GetSigHist(f, "h0met_nopu", "wh_zh_tth_hww",  MYMAGENTA1, LSOLID, leg6, "HW HW Htt, H > WW");
+   TH1F    * h0met_nopu_wh_zh_tth_hww  = GetSigHist(f, "h0met_nopu", "zh_hww",  MYMAGENTA1, LSOLID, leg6, "HZ, H > WW");
    h0met_nopu_hxx_1GeV->Scale(1/h0met_nopu_hxx_1GeV->Integral());
    h0met_nopu_h_zz_4l->Scale(1/h0met_nopu_h_zz_4l->Integral());
    h0met_nopu_wh_zh_tth_hzz->Scale(1/h0met_nopu_wh_zh_tth_hzz->Integral());
@@ -342,13 +359,13 @@ mkplots(){
    h0met_nopu_wh_zh_tth_hzz->Draw("HSAME");
    h0met_nopu_wh_zh_tth_hww->Draw("HSAME");
    leg6->Draw();
-   TLine *l3 = new TLine(75, 0, 75, 0.04);
-   l3->SetLineWidth(3);
-   l3->Draw();
+   TLine *l7 = new TLine(125, 0, 125, 0.04);
+   l7->SetLineWidth(3);
+   l7->Draw();
    c6->SaveAs("met_unitnorm.png");
 
 
-
+  return 0;
 
 
 
